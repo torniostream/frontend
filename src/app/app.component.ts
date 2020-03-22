@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'project';
+  admin = "Simone Mulazzi";
   accounts = [
     {id: 1 ,name : 'Kriive', access: 'oggi alle 18.10'},
     {id: 2 ,name : 'Mulaz1', access: 'ieri alle 12.30'},

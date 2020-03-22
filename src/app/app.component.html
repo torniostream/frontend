@@ -1,18 +1,32 @@
 <html>
-<body ng-app="" ng-controller="myCtrl">
+<body>
   <!-- Navbar -->
   <div class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">
-      <div class="bg-dark p-4">
-        <h4 class="text-black">Collapsed content</h4>
-        <span class="text-muted">Toggleable via the navbar brand.</span>
+      <div class="bg-light p-4 cyan">
+        <h4 class="text-light">Menu</h4>
+
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link menu-btn" href="#"><i class="fa fa-film"></i>&#160;Film</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menu-btn" href="#"><i class="fa fa-comments"></i>&#160;Chat</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menu-btn" href="#"><i class="fa fa-user-astronaut"></i>&#160;Account</a>
+          </li>
+        </ul>
+
       </div>
     </div>
     <nav class="navbar navbar-light cyan">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+
+      <button class="navbar-toggler btn-outline-light" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="true" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <img src="../assets/img/mulaz.jpg"class=" rounded-circle profile-img">
+      <!-- <img src="../assets/img/mulaz.jpg"class=" rounded-circle profile-img"> -->
+      {{admin}}
     </nav>
   </div>
 
@@ -26,13 +40,13 @@
           </button>
           <hr class="hr">
           <div class="btn btn-custom">
-            <img src="../assets/img/manu.jpeg"class=" rounded-circle contact-img">Kriive
+            <img src="../assets/img/manu.jpeg"class="rounded-circle contact-img">Kriive
             <br>
             <small>Hai partecipato ieri alle 18.30</small>
           </div>
 
           <div class="btn btn-custom" *ngFor="let account of accounts">
-            <img src="../assets/img/manu.jpeg"class=" rounded-circle contact-img">{{account.name}}
+            <img src="../assets/img/manu.jpeg"class="rounded-circle contact-img">{{account.name}}
             <br>
             <small>Hai partecipato {{account.access}}</small>
           </div>
