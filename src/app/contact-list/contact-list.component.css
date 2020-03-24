@@ -1,0 +1,43 @@
+
+.profile-img{
+  max-height: 45px;
+  max-width: 45px;
+  position : block;
+  float: left;
+}
+
+.btn-tondo{
+  border-radius: 50%;
+  position:block;
+  float: left;
+  padding: none;
+}
+
+.btn:hover
+{
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  background: transparent;
+  color:#1c8adb;
+  border-color:#1c8adb;
+}
+
+
+.btn-custom{
+  margin-top: 5%;
+  padding: none;
+  margin: none;
+  ;
+}
+
+.btn-custom:hover{
+border: #bdbdbd;
+color: black;
+background: transparent;
+}
+
+.contact-img{
+  max-height: 25%;
+  max-width: 25%;
+  position:block;
+  float: left;
+}
