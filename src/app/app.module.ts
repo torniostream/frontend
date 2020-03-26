@@ -7,6 +7,7 @@ import { TopBlockComponent } from './top/top.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
 import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { LoginComponent } from './login/login.component';
     TopBlockComponent,
     ContactListComponent,
     ChatComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,7 @@ import { LoginComponent } from './login/login.component';
       },
       {
         path: '',
-        component: AppComponent,
+        component: HomeComponent,
       }
     ])
   ],

@@ -3,25 +3,5 @@
 <button class="btn btn-primary" (click)="displayChat()"></button>
 <a [routerLink]="['/login']" routerLinkActive="active">Login</a>
 
-<div class="container conteiner-body">
-  <div class="row body">
-    <!-- left col -->
-    <div class="col-lg-5 left block-chat text-center">
-        <app-contact-list *ngIf="!chat"></app-contact-list>
-        <app-chat *ngIf="chat"></app-chat>
-    </div>
-    <!-- right col -->
-      <div class="col-md-7 right">
-        <h4 class="mt-5% text-white" >Drop in your Movie</h4>
-        <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
-          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
-        </div>
-        <div  class="files-list" *ngFor="let file of files;let i= index">
-            <p> {{ file }} </p>
-            <button class="delete-file" (click)="deleteAttachment(i)">
-              <i class="fas fa-delate"></i>
-            </button>
-        </div>
-      </div>
-  </div>
-</div>
+
+<router-outlet></router-outlet>
