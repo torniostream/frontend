@@ -1,1 +1,14 @@
 /* #17a2b8 */
+.fixed-action-btn
+{
+  border-radius: 20%;
+  background-image: rgb(0,0,0,0.7);
+  float:right;
+  color: black;
+  box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  transition: all 0.1s ease-in-out;
+  position: fixed;
+  right: 1%;
+  top : 1%;
+}
+

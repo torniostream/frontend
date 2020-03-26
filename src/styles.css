@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-  background-image: url('../src/assets/img/background4.jpg');
+  background-image: url('../src/assets/img/background6.jpg');
   background-repeat: no-repeat, repeat;
   background-position: center;
   background-size: cover;
@@ -54,9 +54,11 @@ body{
 
 .uploadfilecontainer:hover {
   cursor: pointer;
-  background-color: whitesmoke !important;
+  background-color: transparent !important;
   box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
   opacity: 0.8;
+  transform: scale(1.2);
+  border: 2px dashed white;
 }
 
 .files-list {
@@ -72,13 +74,16 @@ body{
 }
 
 .container-body{
-  margin-bottom: 5%;
-  padding : 0px;
+  margin-top: 5%;
+  padding: 5%;
 
 
 }
+.conteiner-body .body{
+  padding: 5%;
+}
 .conteiner-body .block-chat{
-  padding: 1%;
+  padding: none;
   height :40rem;
   overflow: auto;
 
@@ -87,17 +92,16 @@ body{
 .left{
   padding: 1%;
   box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-  background-color: rgb(255,255,255,0.8);
+  background-color: rgb(255,255,255,0.9);
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
-
 }
 
 .right{
   padding: 5%;
   box-shadow: 0 10px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
   background-image: linear-gradient(-90deg,#c33764, #1d2671);
-  opacity: 0.8;
+  opacity: 0.9;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
 }

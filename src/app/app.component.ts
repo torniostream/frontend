@@ -8,6 +8,13 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'project';
   admin = "Simone Mulazzi";
+  chat: boolean = false;
+
+
+  displayChat(){
+    this.chat = !this.chat;
+
+  }
 
   files: any = [];
 
@@ -21,3 +28,4 @@ export class AppComponent {
     this.files.splice(index, 1)
   }
 }
+

@@ -19,6 +19,7 @@
   background: transparent;
   color:#1c8adb;
   border-color:#1c8adb;
+  transform: scale(1.05);
 }
 
 
@@ -33,11 +34,16 @@
 border: #bdbdbd;
 color: black;
 background: transparent;
+transform: scale(1.05);
 }
 
 .contact-img{
-  max-height: 25%;
-  max-width: 25%;
+  max-height: 15%;
+  max-width: 15%;
   position:block;
   float: left;
+}
+
+.rounded-btn{
+  border-radius: 25px;
 }
