@@ -1,14 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router'
+import { MatSliderModule } from '@angular/material/slider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { TopBlockComponent } from './top/top.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
 import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-
+import { DialogOverviewExampleDialogComponent, PlayerComponent } from './player/player.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,20 +24,30 @@ import { HomeComponent } from './home/home.component';
     ContactListComponent,
     ChatComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    PlayerComponent,
+    DialogOverviewExampleDialogComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    MatInputModule,
+    MatSliderModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    FormsModule,
     RouterModule.forRoot([
       {
-        path: 'login',
-        component: LoginComponent,
+        path: 'wsplayer',
+        component: PlayerComponent,
       },
       {
-        path: '',
-        component: HomeComponent,
+        path: '**',
+        component: PlayerComponent,
       }
-    ])
+    ]),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

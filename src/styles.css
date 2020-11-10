@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-body{
+/* body{
   background-image: url('../src/assets/img/background6.jpg');
   background-repeat: no-repeat, repeat;
   background-position: center;
@@ -15,4 +15,7 @@ body{
 }
 .border-right{
   border-right: 10px double;
-}
+} */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
