@@ -1,12 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-body{
-  background-image: url('../src/assets/img/background6.jpg');
-  background-repeat: no-repeat, repeat;
-  background-position: center;
-  background-size: cover;
-  font-family: 'Oswald', sans-serif;
-}
 .margin-right{
   margin-right: 5%
 }
