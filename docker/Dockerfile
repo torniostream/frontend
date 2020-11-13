@@ -3,10 +3,16 @@ FROM node:12.7-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN yes N | npm install
-COPY . .
+
+# Copy only the file needed for Angular build
+COPY *.json .
+COPY .browserslistrc .
+COPY src ./src
+
 RUN npm run build-prod
 
 ### STAGE 2: Run ###
-FROM nginx:1.17.1-alpine
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM nginx:1.19.4-alpine
+
+COPY docker/nginx.conf /etc/nginx/templates/default.conf.template
 COPY --from=build /usr/src/app/dist/project /usr/share/nginx/html
