@@ -1,0 +1,10 @@
+{
+  "/wss/player": {
+    "target": "ws://127.0.0.1:8082",
+    "secure": false,
+    "ws": true,
+    "changeOrigin": false,
+    "pathRewrite": {"^/wss" : ""},
+    "logLevel": "debug"
+  }
+}
