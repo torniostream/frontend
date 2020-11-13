@@ -9,7 +9,7 @@ import { Observable, Subject, timer } from 'rxjs';
 })
 export class ApiService {
   myWebSocket: WebSocketSubject<any> = webSocket(
-    'ws://' + environment.apiurl + '/player'
+    environment.apiurl
   );
 
   private webRtcPeer: any;

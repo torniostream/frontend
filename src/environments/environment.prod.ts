@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiurl: 'stream.shii.it:4200/wss',
+  apiurl: 'wss://stream.shii.it/wss/player',
 };
