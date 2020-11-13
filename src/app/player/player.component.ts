@@ -43,6 +43,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   timeLeft = '00:00';
 
+  title = 'Blender Foundation';
+  subtitle = 'Big Buck Bunny';
+
   @ViewChild('videoRef') divView: ElementRef;
 
   @HostListener('document:fullscreenchange', ['$event'])
