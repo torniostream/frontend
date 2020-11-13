@@ -4,11 +4,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { TopBlockComponent } from './top/top.component';
-import { ContactListComponent } from './contact-list/contact-list.component';
-import { ChatComponent } from './chat/chat.component';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
+
 import { DialogOverviewExampleDialogComponent, PlayerComponent } from './player/player.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,11 +16,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    TopBlockComponent,
-    ContactListComponent,
-    ChatComponent,
-    LoginComponent,
-    HomeComponent,
     PlayerComponent,
     DialogOverviewExampleDialogComponent
   ],
