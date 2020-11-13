@@ -1,21 +1,2 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* body{
-  background-image: url('../src/assets/img/background6.jpg');
-  background-repeat: no-repeat, repeat;
-  background-position: center;
-  background-size: cover;
-  font-family: 'Oswald', sans-serif;
-}
-.margin-right{
-  margin-right: 5%
-}
-.margin-top{
-  margin-top: 10%;
-}
-.border-right{
-  border-right: 10px double;
-} */
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
