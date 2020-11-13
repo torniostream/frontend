@@ -8,13 +8,13 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-dialog-overview-example-dialog',
-  templateUrl: 'dialog-overview-example-dialog.html',
+  selector: 'app-room-dialog',
+  templateUrl: 'room.dialog.html',
 })
-export class DialogOverviewExampleDialogComponent {
+export class RoomDialogComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    public dialogRef: MatDialogRef<RoomDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -54,7 +54,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+    const dialogRef = this.dialog.open(RoomDialogComponent, {
       width: '250px',
       data: {room: ''}
     });
