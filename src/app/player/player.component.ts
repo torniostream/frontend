@@ -1,7 +1,19 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, Inject, HostListener } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  OnInit,
+  Inject,
+  HostListener,
+} from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { DOCUMENT } from '@angular/common';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 export interface DialogData {
   room: string;
@@ -12,23 +24,27 @@ export interface DialogData {
   templateUrl: 'room.dialog.html',
 })
 export class RoomDialogComponent {
-
   constructor(
-    public dialogRef: MatDialogRef<RoomDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    public dialogRef: MatDialogRef<RoomDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.css']
+  styleUrls: ['./player.component.css'],
 })
 export class PlayerComponent implements AfterViewInit, OnInit {
-  constructor(private api: ApiService, @Inject(DOCUMENT) private document: Document, public dialog: MatDialog) { }
+  constructor(
+    private api: ApiService,
+    @Inject(DOCUMENT) private document: Document,
+    public dialog: MatDialog
+  ) {}
   Playing = false;
 
   elem: any;
@@ -48,21 +64,24 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   @ViewChild('videoRef') divView: ElementRef;
 
+  controlOpacity = 1;
+  controlTimeout: any;
+
   @HostListener('document:fullscreenchange', ['$event'])
   @HostListener('document:webkitfullscreenchange', ['$event'])
   @HostListener('document:mozfullscreenchange', ['$event'])
   @HostListener('document:MSFullscreenChange', ['$event'])
-  fullscreenmodes(event){
+  fullscreenmodes(event) {
     this.chkScreenMode();
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {
       width: '250px',
-      data: {room: ''}
+      data: { room: '' },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       this.api.registerToRoom(result, this.divView.nativeElement);
       this.audioon = !this.divView.nativeElement.muted;
@@ -82,16 +101,16 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       let hours = null;
 
       if (totalSecondsRemaining >= 3600) {
-        hours = (time.getHours().toString()).padStart(2, '0');
+        hours = time.getHours().toString().padStart(2, '0');
       }
 
-      const minutes = (time.getMinutes().toString()).padStart(2, '0');
-      const seconds = (time.getSeconds().toString()).padStart(2, '0');
+      const minutes = time.getMinutes().toString().padStart(2, '0');
+      const seconds = time.getSeconds().toString().padStart(2, '0');
 
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
-    this.api.getVideoDuration().subscribe((dur) => this.duration = dur);
-    this.api.getIsPlaying().subscribe((play) => this.Playing = play);
+    this.api.getVideoDuration().subscribe((dur) => (this.duration = dur));
+    this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
 
   toggleMute() {
@@ -100,7 +119,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   onSeek(event) {
-    const value = (event.value);
+    const value = event.value;
     console.log(value);
     this.api.doSeek(value);
   }
@@ -109,14 +128,25 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.api.doSeek(this.position + sec * 1000);
   }
 
-  chkScreenMode(){
-    if (document.fullscreenElement){
+  chkScreenMode() {
+    if (document.fullscreenElement) {
       // fullscreen
       this.isFullScreen = true;
-    }else{
+    } else {
       // not in full screen
       this.isFullScreen = false;
     }
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  displayControls(event: any) {
+    this.controlOpacity = 1;
+    if (this.controlTimeout) {
+      clearTimeout(this.controlTimeout);
+    }
+    this.controlTimeout = setTimeout(() => {
+       this.controlOpacity = 0;
+     }, 5000);
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -161,5 +191,3 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     }
   }
 }
-
-

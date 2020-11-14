@@ -1,6 +1,10 @@
-<div #basePlayer class="video-container">
+<div
+  #basePlayer
+  class="video-container"
+  [ngClass]="controlOpacity ? 'cursor-initial' : 'cursor-none'"
+>
   <video autoplay muted #videoRef></video>
-  <div class="controls-container">
+  <div [style.opacity]="controlOpacity" class="controls-container">
     <div class="progress-controls">
       <mat-slider
         width="100%"

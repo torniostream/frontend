@@ -3,6 +3,14 @@ mat-slider {
   margin: 1vw;
 }
 
+.cursor-initial {
+  cursor: initial;
+}
+
+.cursor-none {
+  cursor: none;
+}
+
 .video-container {
   background-color: black;
   width: 100%;
