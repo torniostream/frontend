@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Hello!</h1>
+<div mat-dialog-content>
+  <p>Enter your room code</p>
+  <mat-form-field>
+    <mat-label>Room code</mat-label>
+    <input matInput [(ngModel)]="data.room">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data.room" cdkFocusInitial>Ok</button>
+</div>

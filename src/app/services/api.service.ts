@@ -132,6 +132,7 @@ export class ApiService {
   }
 
   showVideoData(parsedMessage) {
+    
     // Show video info
     this.isSeekable = parsedMessage.isSeekable;
 

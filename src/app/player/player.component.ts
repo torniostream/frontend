@@ -2,24 +2,12 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, Inject, HostLi
 import { ApiService } from '../services/api.service';
 import { DOCUMENT } from '@angular/common';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+
+
 
 export interface DialogData {
   room: string;
-}
-
-@Component({
-  selector: 'app-room-dialog',
-  templateUrl: 'room.dialog.html',
-})
-export class RoomDialogComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<RoomDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }
 
 @Component({
@@ -27,8 +15,9 @@ export class RoomDialogComponent {
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
+
 export class PlayerComponent implements AfterViewInit, OnInit {
-  constructor(private api: ApiService, @Inject(DOCUMENT) private document: Document, public dialog: MatDialog) { }
+  constructor(private api: ApiService, @Inject(DOCUMENT) private document: Document, public dialog: MatDialog, private route: ActivatedRoute ){ }
   Playing = false;
 
   elem: any;
@@ -43,35 +32,21 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   timeLeft = '00:00';
 
-  title = 'Blender Foundation';
-  subtitle = 'Big Buck Bunny';
-
   @ViewChild('videoRef') divView: ElementRef;
 
   @HostListener('document:fullscreenchange', ['$event'])
   @HostListener('document:webkitfullscreenchange', ['$event'])
   @HostListener('document:mozfullscreenchange', ['$event'])
   @HostListener('document:MSFullscreenChange', ['$event'])
+
   fullscreenmodes(event){
     this.chkScreenMode();
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(RoomDialogComponent, {
-      width: '250px',
-      data: {room: ''}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.api.registerToRoom(result, this.divView.nativeElement);
-      this.audioon = !this.divView.nativeElement.muted;
-    });
   }
 
   ngOnInit(): void {
     this.chkScreenMode();
     this.elem = document.documentElement;
+    console.log('ciao');
     this.api.getPosition().subscribe((pos) => {
       this.position = pos;
       console.log(pos);
@@ -92,6 +67,10 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     });
     this.api.getVideoDuration().subscribe((dur) => this.duration = dur);
     this.api.getIsPlaying().subscribe((play) => this.Playing = play);
+  }
+
+  VolumeChange(volume){
+    this.elem.volume = volume;
   }
 
   toggleMute() {
@@ -127,17 +106,35 @@ export class PlayerComponent implements AfterViewInit, OnInit {
         break;
       case ' ':
         this.togglePlaying();
+
     }
+
     console.log(event.key);
   }
 
   togglePlaying() {
-    this.Playing ? this.api.pause() : this.api.resume();
+    // this.Playing ? this.api.pause() : this.api.resume();
+    if (this.Playing){this.elem.pause(); }
+    else {this.elem.play();}
     this.Playing = !this.Playing;
   }
 
   ngAfterViewInit(): void {
-    this.openDialog();
+    const code: string = this.route.snapshot.queryParamMap.get('code');
+    console.log(code);
+    this.api.registerToRoom(code, this.elem);
+    this.audioon = false;
+  }
+
+
+  toggleFullscreen(){
+
+    if (!this.isFullScreen){
+      this.openFullscreen();
+    }
+    else{
+      this.closeFullscreen();
+    }
   }
 
   openFullscreen() {
@@ -153,12 +150,18 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       /* IE/Edge */
       this.elem.msRequestFullscreen();
     }
+    this.isFullScreen = !this.isFullScreen;
   }
 
   closeFullscreen() {
-    if (this.document.exitFullscreen) {
-      this.document.exitFullscreen();
+    if (this.elem.exitFullscreen) {
+      this.elem.exitFullscreen();
+    } else if (this.elem.webkitExitFullscreen) { /* Safari */
+      this.elem.webkitExitFullscreen();
+    } else if (this.elem.msExitFullscreen) { /* IE11 */
+      this.elem.msExitFullscreen();
     }
+    this.isFullScreen = !this, this.isFullScreen;
   }
 }
 

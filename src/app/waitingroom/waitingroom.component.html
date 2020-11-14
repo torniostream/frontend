@@ -1,0 +1,29 @@
+<div class="signin-content">
+    <mat-card id='main'>
+        <mat-grid-list cols="2" rowHeight="1.1:1">
+        <mat-grid-tile class="bg-green">
+         <app-userlist></app-userlist>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-card id="card">
+                    <mat-card-header>
+                        <mat-card-title class='text-color margin-top text-center'><h1>Welcome!</h1></mat-card-title>
+                    </mat-card-header>
+
+                <mat-card-content>
+                        <form class="example-form">
+                            <mat-form-field class="example-full-width text-color">
+                              <mat-label>Nickname: </mat-label>
+                              <input matInput placeholder="Nickname" name="username" required value="">
+                            </mat-form-field>
+                            <button mat-raised-button color="primary" type="submit" style="margin-right:5px;" (click) = "goToFilm()">Join</button>
+                            <button mat-raised-button color="primary" type="button" style="margin-right:5px;">Create</button>
+                        </form>
+                </mat-card-content>
+            </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+</mat-card>
+</div>
+    
