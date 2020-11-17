@@ -2,6 +2,8 @@
 
 This project is the frontend for tornio.stream, which is a service aimed to play movies in real-time with your friends. It is based on Kurento Media Server, and it uses Spring Boot as a backend. This frontend is based on Angular.
 
+![The player](https://i.imgur.com/BwTtLNS.jpg)
+
 ## How to hack
 ### Start back-end and Kurento Media Server (KMS)
 
