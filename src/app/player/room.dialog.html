@@ -1,11 +1,16 @@
 <h1 mat-dialog-title>{{ greet }} 👋</h1>
 <div mat-dialog-content>
-  <p>Inserisci il codice della stanza qui sotto.</p>
-  <mat-form-field>
-    <mat-label>Codice della stanza</mat-label>
-    <input matInput [(ngModel)]="data.room" />
-  </mat-form-field>
+  <div *ngIf="data.room == null || data.room == ''">
+    <p>Inserisci il codice della stanza qui sotto.</p>
+    <mat-form-field>
+      <mat-label>Codice della stanza</mat-label>
+      <input matInput [(ngModel)]="data.room" />
+    </mat-form-field>
+  </div>
+  <div *ngIf="data.room != null && data.room != ''">
+    <p>Stai per entrare dentro alla stanza <b>{{data.room}}</b>. Buona visione!</p>
+  </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data.room" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="data.room" cdkFocusInitial>Procedi</button>
 </div>
