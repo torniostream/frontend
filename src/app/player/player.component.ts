@@ -27,10 +27,18 @@ export class RoomDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<RoomDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) {
+    this.greet = this.getGreeting();
+  }
+
+  greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
+  greet: string;
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  getGreeting(): string {
+    return this.greets[Math.floor(Math.random() * this.greets.length)];
   }
 }
 
@@ -82,7 +90,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       this.api.registerToRoom(result, this.divView.nativeElement);
       this.audioon = !this.divView.nativeElement.muted;
     });
@@ -145,8 +152,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       clearTimeout(this.controlTimeout);
     }
     this.controlTimeout = setTimeout(() => {
-       this.controlOpacity = 0;
-     }, 5000);
+      this.controlOpacity = 0;
+    }, 5000);
   }
 
   @HostListener('document:keyup', ['$event'])
