@@ -7,6 +7,7 @@ import {
   Inject,
   HostListener,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -51,7 +52,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   constructor(
     private api: ApiService,
     @Inject(DOCUMENT) private document: Document,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private route: ActivatedRoute
   ) {}
   Playing = false;
 
@@ -75,6 +77,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   controlOpacity = 1;
   controlTimeout: any;
 
+  roomId: string;
+
   @HostListener('document:fullscreenchange', ['$event'])
   @HostListener('document:webkitfullscreenchange', ['$event'])
   @HostListener('document:mozfullscreenchange', ['$event'])
@@ -86,7 +90,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {
       width: '250px',
-      data: { room: '' },
+      data: { room: this.roomId },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -96,6 +100,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.roomId = params.room;
+    });
     this.chkScreenMode();
     this.elem = document.documentElement;
     this.api.getPosition().subscribe((pos) => {
