@@ -17,10 +17,10 @@ Open a shell and type the following:
 ng serve --open --proxy-config src/proxy.conf.json # This last bit is really important
 ```
 
-### Start hacking!
-Now you have everything needed up and running. To play a movie go to [http://127.0.0.1:8082](http://127.0.0.1:8082) and paste a link to a mp4 file. To obtain the room id you have to dig inside the logs of docker-compose with ```sudo docker-compose logs -f backend``` and search for a line that says: "code uuid xxxxx-xxxxxxx-xxxxxxxxx" or "Codice: xxxxxx-xxxxx-xxxxxxxx". 
+### Start hack!
+Now you have everything needed up and running. To play a movie go to [http://127.0.0.1:8082](http://127.0.0.1:8082) and play a movie. To get a room id you have to dig inside the logs of docker-compose with ```sudo docker-compose logs -f backend``` and search for a line that says: "code uuid xxxxx-xxxxxxx-xxxxxxxxx" or "Codice: xxxxxx-xxxxx-xxxxxxxx". 
 
-Beware that if you press Play more than once a new room will be created. I know it's ugly, but it is what it is until we don't get waiting room up and running :) Plz contribute to `feat/waitingroom`.
+Beware that if you press Play more than once a new room will be created. I know it's ugly, but it is what it is until we don't get waiting room up and running :) Plz contribute to ```feat/waitingroom```.
 
 ### Running unit tests
 
