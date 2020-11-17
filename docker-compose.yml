@@ -1,0 +1,12 @@
+version: "3"
+services:
+  backend:
+    image: kriive/kurento-backend:latest
+    environment:
+      - KMS_ADDR=172.17.0.1
+      - KMS_PORT=8888
+    ports:
+      - "8082:8082"
+  mediaserver:
+    image: kurento/kurento-media-server:latest
+    network_mode: "host"
