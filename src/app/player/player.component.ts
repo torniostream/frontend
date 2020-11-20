@@ -134,7 +134,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
 
   VolumeChange(volume){
-    this.divView.nativeElement.volume = volume;
+    this.divView.nativeElement.volume = volume.value;
   }
 
 
