@@ -16,33 +16,6 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 
-export interface DialogData {
-  room: string;
-}
-
-@Component({
-  selector: 'app-room-dialog',
-  templateUrl: 'room.dialog.html',
-})
-export class RoomDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<RoomDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-    this.greet = this.getGreeting();
-  }
-
-  greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
-  greet: string;
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-  getGreeting(): string {
-    return this.greets[Math.floor(Math.random() * this.greets.length)];
-  }
-}
-
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -87,18 +60,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.chkScreenMode();
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(RoomDialogComponent, {
-      width: '250px',
-      data: { room: this.roomId },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      this.api.registerToRoom(result, this.divView.nativeElement);
-      this.audioon = !this.divView.nativeElement.muted;
-    });
-  }
-
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.roomId = params.room;
@@ -131,6 +92,11 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.divView.nativeElement.muted = !this.divView.nativeElement.muted;
     this.audioon = !this.divView.nativeElement.muted;
   }
+
+  VolumeChange(volume){
+    this.divView.nativeElement.volume = volume.value;
+  }
+S
 
   onSeek(event) {
     const value = event.value;
@@ -169,20 +135,43 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       case 'm':
         this.toggleMute();
         break;
+
       case ' ':
         this.togglePlaying();
+        break;
+
+      case 'f':
+        this.openFullscreen();
     }
     console.log(event.key);
   }
 
+
+  //play and pause button
   togglePlaying() {
     this.Playing ? this.api.pause() : this.api.resume();
     this.Playing = !this.Playing;
   }
 
   ngAfterViewInit(): void {
-    this.openDialog();
+    //this.openDialog();
+    const code_room: string = this.route.snapshot.queryParamMap.get('room');
+    console.log(code_room);
+    this.api.registerToRoom(code_room,this.elem)
+    this.audioon = false;
   }
+
+  //fullscreen button
+  toggleFullscreen(){
+
+    if(!this.isFullScreen){
+      this.openFullscreen();
+    }
+    else{
+      this.closeFullscreen();
+    }
+  }
+
 
   openFullscreen() {
     if (this.elem.requestFullscreen) {
@@ -200,8 +189,13 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   closeFullscreen() {
-    if (this.document.exitFullscreen) {
-      this.document.exitFullscreen();
+    if (this.elem.exitFullscreen) {
+      this.elem.exitFullscreen();
+    } else if (this.elem.webkitExitFullscreen) { /* Safari */
+      this.elem.webkitExitFullscreen();
+    } else if (this.elem.msExitFullscreen) { /* IE11 */
+      this.elem.msExitFullscreen();
     }
+    this.isFullScreen = !this,this.isFullScreen;
   }
 }
