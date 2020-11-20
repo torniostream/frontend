@@ -5,7 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
-import { PlayerComponent } from './player/player.component';
+import { RoomDialogComponent, PlayerComponent } from './player/player.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     PlayerComponent,
+    RoomDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +30,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     RouterModule.forRoot([
       {
-        path: 'wsplayer',
+        path: 'player',
         component: PlayerComponent,
       },
       {
