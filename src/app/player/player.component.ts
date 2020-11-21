@@ -55,7 +55,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     @Inject(DOCUMENT) private document: Document,
     public dialog: MatDialog,
     private route: ActivatedRoute
-  ) { }
+  ) {}
   Playing = false;
 
   elem: any;
@@ -100,7 +100,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === ''){
+      if (result === '') {
         console.log('Error: Insert code room again');
       }
       this.api.registerToRoom(result, this.divView.nativeElement);
@@ -108,18 +108,18 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     });
   }
 
-  muted(){
+  muted() {
     this.divView.nativeElement.muted = true;
     this.audioon = false;
   }
 
-  noMuted(){
+  noMuted() {
     this.divView.nativeElement.muted = false;
     this.audioon = true;
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.roomId = params.room;
     });
     this.chkScreenMode();
@@ -144,7 +144,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
     this.api.getVideoDuration().subscribe((dur) => {
-      if (dur <= 0) { console.log('Negative duration!'); }
+      if (dur <= 0) {
+        console.log('Negative duration!');
+      }
       this.duration = dur;
       const temp = dur / 1000;
 
@@ -159,8 +161,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       const minutes_tot = duration.getMinutes().toString().padStart(2, '0');
       const seconds_tot = duration.getSeconds().toString().padStart(2, '0');
 
-      this.durationTot = `${hours_tot ? hours_tot : '00'}:${minutes_tot}:${seconds_tot}`;
-
+      this.durationTot = `${
+        hours_tot ? hours_tot : '00'
+      }:${minutes_tot}:${seconds_tot}`;
     });
     this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
@@ -170,21 +173,25 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.audioon = !this.divView.nativeElement.muted;
   }
 
-
   VolumeChange(volume) {
     this.divView.nativeElement.volume = volume.value;
 
-    if (volume.value <= 0.0) { this.muted(); }
-    else{                 // se il volume e' minore della meta' usa icona volume-low altrimenti volume-high
-          this.noMuted();
-          if (volume.value <= 0.5) { this.audiolow = true; }
-          else { this.audiolow = false; }
+    if (volume.value <= 0.0) {
+      this.muted();
+    } else {
+      // se il volume e' minore della meta' usa icona volume-low altrimenti volume-high
+      this.noMuted();
+      if (volume.value <= 0.5) {
+        this.audiolow = true;
+      } else {
+        this.audiolow = false;
+      }
     }
   }
 
   activePip() {
     if (this.divView.nativeElement.pictureInPictureEnabled) {
-            this.divView.nativeElement.requestPictureInPicture();
+      this.divView.nativeElement.requestPictureInPicture();
     }
   }
 
@@ -247,8 +254,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   toggleFullscreen() {
     if (!this.isFullScreen) {
       this.openFullscreen();
-    }
-    else {
+    } else {
       this.closeFullscreen();
     }
   }
