@@ -39,7 +39,7 @@ import { WaitingroomComponent } from './waitingroom/waitingroom.component';
       },
       {
         path: '**',
-        component: WaitingroomComponent,
+        component: PlayerComponent,
       }
     ]),
     BrowserAnimationsModule,
