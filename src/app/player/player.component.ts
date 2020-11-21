@@ -15,8 +15,6 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { exit } from 'process';
-import { threadId } from 'worker_threads';
 
 export interface DialogData {
   room: string;
@@ -61,7 +59,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   Playing = false;
 
   elem: any;
-  isFullScreen: boolean = false;
+  isFullScreen = false;
 
   width = 0;
 
@@ -102,9 +100,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if(result == ''){
-        console.log('Error: Innsert code room again');
-        exit;
+      if (result === ''){
+        console.log('Error: Insert code room again');
       }
       this.api.registerToRoom(result, this.divView.nativeElement);
       this.audioon = !this.divView.nativeElement.muted;
@@ -120,7 +117,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.divView.nativeElement.muted = false;
     this.audioon = true;
   }
-  
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.roomId = params.room;
@@ -147,10 +144,10 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
     this.api.getVideoDuration().subscribe((dur) => {
-      if(dur <= 0) alert("Error: try again");
+      if (dur <= 0) { console.log('Negative duration!'); }
       this.duration = dur;
-      let temp = dur/1000;
-      
+      const temp = dur / 1000;
+
       const duration = new Date(null);
       duration.setSeconds(temp);
       let hours_tot = null;
@@ -177,17 +174,18 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   VolumeChange(volume) {
     this.divView.nativeElement.volume = volume.value;
 
-    if (volume.value <= 0.0) this.muted();
-    else{                 //se il volume e' minore della meta' usa icona volume-low altrimenti volume-high
-          this.noMuted();   
-          if (volume.value <= 0.5) this.audiolow = true;
-          else this.audiolow = false;
+    if (volume.value <= 0.0) { this.muted(); }
+    else{                 // se il volume e' minore della meta' usa icona volume-low altrimenti volume-high
+          this.noMuted();
+          if (volume.value <= 0.5) { this.audiolow = true; }
+          else { this.audiolow = false; }
     }
   }
 
   activePip() {
-    if (this.divView.nativeElement.pictureInPictureEnabled)
+    if (this.divView.nativeElement.pictureInPictureEnabled) {
             this.divView.nativeElement.requestPictureInPicture();
+    }
   }
 
   onSeek(event) {
@@ -245,10 +243,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.openDialog();
   }
 
-
-  //fullscreen button
+  // Fullscreen button
   toggleFullscreen() {
-
     if (!this.isFullScreen) {
       this.openFullscreen();
     }
@@ -269,18 +265,18 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     } else if (this.elem.msRequestFullscreen) {
       /* IE/Edge */
       this.elem.msRequestFullscreen();
-      this.isFullScreen = true;
+    } else {
+      return;
     }
+    this.isFullScreen = true;
   }
 
   closeFullscreen() {
-    if (this.elem.exitFullscreen) {
-      this.elem.exitFullscreen();
-    } else if (this.elem.webkitExitFullscreen) { /* Safari */
-      this.elem.webkitExitFullscreen();
-    } else if (this.elem.msExitFullscreen) { /* IE11 */
-      this.elem.msExitFullscreen();
+    if (!this.document.exitFullscreen) {
+      return; // Fullscreen WebAPI not found
     }
+
+    this.document.exitFullscreen();
     this.isFullScreen = false;
   }
 }
