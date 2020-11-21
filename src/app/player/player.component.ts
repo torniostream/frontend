@@ -109,7 +109,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   muted(){
-    this.divView.nativeElement.muted;
+    this.divView.nativeElement.muted = true;
     this.audioon = false;
   }
 
