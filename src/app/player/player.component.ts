@@ -58,7 +58,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   Playing = false;
 
   elem: any;
-  isFullScreen: boolean;
+  isFullScreen: boolean = false;
 
   width = 0;
 
@@ -68,6 +68,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   audioon = false;
 
   timeLeft = '00:00';
+  durationTot = '00:00';
 
   title = '';
   subtitle = '';
@@ -124,6 +125,14 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
     this.api.getVideoDuration().subscribe((dur) => (this.duration = dur));
+
+    //convert seconds duration into hh:mm:ss format
+    let hours_tot = Math.floor(this.duration / 3600);
+    this.duration %= 3600;
+    let minutes_tot = Math.floor(this.duration / 60);
+    let seconds_tot = this.duration % 60;
+
+    this.durationTot = `${hours_tot ? hours_tot : '00'}:${minutes_tot}:${seconds_tot}`;
     this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
 
@@ -216,6 +225,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     } else if (this.elem.msRequestFullscreen) {
       /* IE/Edge */
       this.elem.msRequestFullscreen();
+      this.isFullScreen = true;
     }
   }
 
@@ -227,6 +237,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     } else if (this.elem.msExitFullscreen) { /* IE11 */
       this.elem.msExitFullscreen();
     }
-    this.isFullScreen = !this,this.isFullScreen;
+    this.isFullScreen = false;
   }
 }

@@ -11,7 +11,7 @@
     <div [style.opacity]="controlOpacity" class="controls-container">
 
       <div class="video-controls" id="video-controls">
-        
+
         <div class="video-progress">
           <mat-slider width="100%" (change)="onSeek($event)" min="0" [max]="duration" step="1" [value]="position">
           </mat-slider>
@@ -41,7 +41,7 @@
             <div class="time">
               <time id="time-elapsed">{{timeLeft}}</time>
               <span> / </span>
-              <time id="duration">{{ duration }}</time>
+              <time id="duration">{{ durationTot }}</time>
             </div>
           </div>
 
