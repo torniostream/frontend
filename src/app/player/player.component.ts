@@ -54,7 +54,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     @Inject(DOCUMENT) private document: Document,
     public dialog: MatDialog,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   Playing = false;
 
   elem: any;
@@ -66,9 +66,12 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   duration = 0;
 
   audioon = false;
+  audiolow = false;
 
   timeLeft = '00:00';
   durationTot = '00:00';
+
+  temp = 0;
 
   title = '';
   subtitle = '';
@@ -90,7 +93,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {
-      width: '250px',
+      width: '40rem',
+      height: '20rem',
       data: { room: this.roomId },
     });
 
@@ -109,13 +113,14 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.api.getPosition().subscribe((pos) => {
       this.position = pos;
       console.log(pos);
-      const totalSecondsRemaining = this.duration / 1000 - pos / 1000;
+      let totalSeconds = 0;
+      totalSeconds = totalSeconds + pos / 1000;
 
       const time = new Date(null);
-      time.setSeconds(totalSecondsRemaining);
+      time.setSeconds(totalSeconds);
       let hours = null;
 
-      if (totalSecondsRemaining >= 3600) {
+      if (totalSeconds >= 3600) {
         hours = time.getHours().toString().padStart(2, '0');
       }
 
@@ -124,15 +129,26 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
-    this.api.getVideoDuration().subscribe((dur) => (this.duration = dur));
+    this.api.getVideoDuration().subscribe((dur) => {
 
-    //convert seconds duration into hh:mm:ss format
-    let hours_tot = Math.floor(this.duration / 3600);
-    this.duration %= 3600;
-    let minutes_tot = Math.floor(this.duration / 60);
-    let seconds_tot = this.duration % 60;
+      if(dur <= 0) alert("Error: try again");
+      this.duration = dur;
+      let temp = dur/1000;
+      
+      const duration = new Date(null);
+      duration.setSeconds(temp);
+      let hours_tot = null;
 
-    this.durationTot = `${hours_tot ? hours_tot : '00'}:${minutes_tot}:${seconds_tot}`;
+      if (temp >= 3600) {
+        hours_tot = duration.getHours().toString().padStart(2, '0');
+      }
+
+      const minutes_tot = duration.getMinutes().toString().padStart(2, '0');
+      const seconds_tot = duration.getSeconds().toString().padStart(2, '0');
+
+      this.durationTot = `${hours_tot ? hours_tot : '00'}:${minutes_tot}:${seconds_tot}`;
+
+    });
     this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
 
@@ -142,12 +158,28 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
 
-  VolumeChange(volume){
+  VolumeChange(volume) {
     this.divView.nativeElement.volume = volume.value;
+
+    if (volume.value <= 0.0) {
+      this.divView.nativeElement.muted;
+      this.audioon = false;
+    }
+    else {
+      if (volume.value <= 0.5) this.audiolow = true;
+      else this.audiolow = false;
+
+      this.divView.nativeElement.muted = false;
+      this.audioon = true;
+    }
+
   }
 
-
-
+  activePip() {
+    if (this.divView.nativeElement.pictureInPictureEnabled)
+      console.log('ciao');
+    this.divView.nativeElement.requestPictureInPicture();
+  }
 
   onSeek(event) {
     const value = event.value;
@@ -202,16 +234,16 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
 
-    //fullscreen button
-    toggleFullscreen(){
+  //fullscreen button
+  toggleFullscreen() {
 
-      if(!this.isFullScreen){
-        this.openFullscreen();
-      }
-      else{
-        this.closeFullscreen();
-      }
+    if (!this.isFullScreen) {
+      this.openFullscreen();
     }
+    else {
+      this.closeFullscreen();
+    }
+  }
 
   openFullscreen() {
     if (this.elem.requestFullscreen) {
