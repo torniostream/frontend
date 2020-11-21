@@ -132,38 +132,16 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
       const time = new Date(null);
       time.setSeconds(totalSeconds);
-      let hours = null;
-
-      if (totalSeconds >= 3600) {
-        hours = time.getHours().toString().padStart(2, '0');
-      }
-
-      const minutes = time.getMinutes().toString().padStart(2, '0');
-      const seconds = time.getSeconds().toString().padStart(2, '0');
-
-      this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
+      this.timeLeft = time.toISOString().substr(11, 8);
     });
     this.api.getVideoDuration().subscribe((dur) => {
       if (dur <= 0) {
         console.log('Negative duration!');
       }
       this.duration = dur;
-      const temp = dur / 1000;
-
-      const duration = new Date(null);
-      duration.setSeconds(temp);
-      let hours_tot = null;
-
-      if (temp >= 3600) {
-        hours_tot = duration.getHours().toString().padStart(2, '0');
-      }
-
-      const minutes_tot = duration.getMinutes().toString().padStart(2, '0');
-      const seconds_tot = duration.getSeconds().toString().padStart(2, '0');
-
-      this.durationTot = `${
-        hours_tot ? hours_tot : '00'
-      }:${minutes_tot}:${seconds_tot}`;
+      var date = new Date(null);
+      date.setSeconds(dur/1000);
+      this.durationTot = date.toISOString().substr(11, 8);
     });
     this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
@@ -190,8 +168,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   activePip() {
-    if (this.divView.nativeElement.pictureInPictureEnabled) {
-      this.divView.nativeElement.requestPictureInPicture();
+    if (this.elem.pictureInPictureEnabled) {
+      this.elem.requestPictureInPicture();
     }
   }
 

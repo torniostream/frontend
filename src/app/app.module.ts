@@ -12,12 +12,16 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { UserCardComponent } from './user-card/user-card.component';
+import { WaitingroomComponent } from './waitingroom/waitingroom.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
-    RoomDialogComponent
+    RoomDialogComponent,
+    UserCardComponent,
+    WaitingroomComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +39,7 @@ import { FormsModule } from '@angular/forms';
       },
       {
         path: '**',
-        component: PlayerComponent,
+        component: WaitingroomComponent,
       }
     ]),
     BrowserAnimationsModule,
