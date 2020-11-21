@@ -15,6 +15,8 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { exit } from 'process';
+import { threadId } from 'worker_threads';
 
 export interface DialogData {
   room: string;
@@ -23,6 +25,7 @@ export interface DialogData {
 @Component({
   selector: 'app-room-dialog',
   templateUrl: 'room.dialog.html',
+  styleUrls: ['./player.component.css'],
 })
 export class RoomDialogComponent {
   constructor(
@@ -99,11 +102,25 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if(result == ''){
+        console.log('Error: Innsert code room again');
+        exit;
+      }
       this.api.registerToRoom(result, this.divView.nativeElement);
       this.audioon = !this.divView.nativeElement.muted;
     });
   }
 
+  muted(){
+    this.divView.nativeElement.muted;
+    this.audioon = false;
+  }
+
+  noMuted(){
+    this.divView.nativeElement.muted = false;
+    this.audioon = true;
+  }
+  
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.roomId = params.room;
@@ -130,7 +147,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
     this.api.getVideoDuration().subscribe((dur) => {
-
       if(dur <= 0) alert("Error: try again");
       this.duration = dur;
       let temp = dur/1000;
@@ -161,24 +177,17 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   VolumeChange(volume) {
     this.divView.nativeElement.volume = volume.value;
 
-    if (volume.value <= 0.0) {
-      this.divView.nativeElement.muted;
-      this.audioon = false;
+    if (volume.value <= 0.0) this.muted();
+    else{                 //se il volume e' minore della meta' usa icona volume-low altrimenti volume-high
+          this.noMuted();   
+          if (volume.value <= 0.5) this.audiolow = true;
+          else this.audiolow = false;
     }
-    else {
-      if (volume.value <= 0.5) this.audiolow = true;
-      else this.audiolow = false;
-
-      this.divView.nativeElement.muted = false;
-      this.audioon = true;
-    }
-
   }
 
   activePip() {
     if (this.divView.nativeElement.pictureInPictureEnabled)
-      console.log('ciao');
-    this.divView.nativeElement.requestPictureInPicture();
+            this.divView.nativeElement.requestPictureInPicture();
   }
 
   onSeek(event) {
@@ -220,6 +229,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
         break;
       case ' ':
         this.togglePlaying();
+        break;
+      case 'f':
+        this.toggleFullscreen();
     }
     console.log(event.key);
   }

@@ -265,3 +265,12 @@ svg {
   margin: 1vw;
   width: 4vw;
 }
+
+
+.mat-dialog-content{
+  text-align: center;
+}
+
+.mat-dialog-title{
+  text-align: center;
+}

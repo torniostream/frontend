@@ -7,13 +7,14 @@
       </svg>
     </div>
 
-    <video autoplay muted #videoRef preload="metadata" class="video" (click) = "togglePlaying()"></video>
+    <video autoplay muted #videoRef preload="metadata" class="video" (click)="togglePlaying()"></video>
     <div [style.opacity]="controlOpacity" class="controls-container">
 
       <div class="video-controls" id="video-controls">
 
         <div class="video-progress">
-          <mat-slider class="progress-bar" width="100%" (change)="onSeek($event)" min="0" [max]="duration" step="1" [value]="position">
+          <mat-slider class="progress-bar" width="100%" (change)="onSeek($event)" min="0" [max]="duration" step="1"
+            [value]="position">
           </mat-slider>
         </div>
 
@@ -35,8 +36,8 @@
                 </svg>
               </button>
 
-              <mat-slider value="1" data-mute="0.5" max="1" min="0" step="0.1"
-                (input)="VolumeChange($event)"></mat-slider>
+              <mat-slider value="1" data-mute="0.5" max="1" min="0" step="0.1" (input)="VolumeChange($event)">
+              </mat-slider>
             </div>
 
             <div class="time">
