@@ -23,6 +23,7 @@ export interface DialogData {
 @Component({
   selector: 'app-room-dialog',
   templateUrl: 'room.dialog.html',
+  styleUrls: ['./player.component.css'],
 })
 export class RoomDialogComponent {
   constructor(
@@ -58,7 +59,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   Playing = false;
 
   elem: any;
-  isFullScreen: boolean;
+  isFullScreen = false;
 
   width = 0;
 
@@ -66,8 +67,12 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   duration = 0;
 
   audioon = false;
+  audiolow = false;
 
   timeLeft = '00:00';
+  durationTot = '00:00';
+
+  temp = 0;
 
   title = '';
   subtitle = '';
@@ -89,18 +94,32 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {
-      width: '250px',
+      width: '40rem',
+      height: '20rem',
       data: { room: this.roomId },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === '') {
+        console.log('Error: Insert code room again');
+      }
       this.api.registerToRoom(result, this.divView.nativeElement);
       this.audioon = !this.divView.nativeElement.muted;
     });
   }
 
+  muted() {
+    this.divView.nativeElement.muted = true;
+    this.audioon = false;
+  }
+
+  noMuted() {
+    this.divView.nativeElement.muted = false;
+    this.audioon = true;
+  }
+
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.roomId = params.room;
     });
     this.chkScreenMode();
@@ -108,13 +127,14 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     this.api.getPosition().subscribe((pos) => {
       this.position = pos;
       console.log(pos);
-      const totalSecondsRemaining = this.duration / 1000 - pos / 1000;
+      let totalSeconds = 0;
+      totalSeconds = totalSeconds + pos / 1000;
 
       const time = new Date(null);
-      time.setSeconds(totalSecondsRemaining);
+      time.setSeconds(totalSeconds);
       let hours = null;
 
-      if (totalSecondsRemaining >= 3600) {
+      if (totalSeconds >= 3600) {
         hours = time.getHours().toString().padStart(2, '0');
       }
 
@@ -123,13 +143,56 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
       this.timeLeft = `${hours ? hours : '00'}:${minutes}:${seconds}`;
     });
-    this.api.getVideoDuration().subscribe((dur) => (this.duration = dur));
+    this.api.getVideoDuration().subscribe((dur) => {
+      if (dur <= 0) {
+        console.log('Negative duration!');
+      }
+      this.duration = dur;
+      const temp = dur / 1000;
+
+      const duration = new Date(null);
+      duration.setSeconds(temp);
+      let hours_tot = null;
+
+      if (temp >= 3600) {
+        hours_tot = duration.getHours().toString().padStart(2, '0');
+      }
+
+      const minutes_tot = duration.getMinutes().toString().padStart(2, '0');
+      const seconds_tot = duration.getSeconds().toString().padStart(2, '0');
+
+      this.durationTot = `${
+        hours_tot ? hours_tot : '00'
+      }:${minutes_tot}:${seconds_tot}`;
+    });
     this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
 
   toggleMute() {
     this.divView.nativeElement.muted = !this.divView.nativeElement.muted;
     this.audioon = !this.divView.nativeElement.muted;
+  }
+
+  VolumeChange(volume) {
+    this.divView.nativeElement.volume = volume.value;
+
+    if (volume.value <= 0.0) {
+      this.muted();
+    } else {
+      // se il volume e' minore della meta' usa icona volume-low altrimenti volume-high
+      this.noMuted();
+      if (volume.value <= 0.5) {
+        this.audiolow = true;
+      } else {
+        this.audiolow = false;
+      }
+    }
+  }
+
+  activePip() {
+    if (this.divView.nativeElement.pictureInPictureEnabled) {
+      this.divView.nativeElement.requestPictureInPicture();
+    }
   }
 
   onSeek(event) {
@@ -171,6 +234,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
         break;
       case ' ':
         this.togglePlaying();
+        break;
+      case 'f':
+        this.toggleFullscreen();
     }
     console.log(event.key);
   }
@@ -182,6 +248,15 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.openDialog();
+  }
+
+  // Fullscreen button
+  toggleFullscreen() {
+    if (!this.isFullScreen) {
+      this.openFullscreen();
+    } else {
+      this.closeFullscreen();
+    }
   }
 
   openFullscreen() {
@@ -196,12 +271,18 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     } else if (this.elem.msRequestFullscreen) {
       /* IE/Edge */
       this.elem.msRequestFullscreen();
+    } else {
+      return;
     }
+    this.isFullScreen = true;
   }
 
   closeFullscreen() {
-    if (this.document.exitFullscreen) {
-      this.document.exitFullscreen();
+    if (!this.document.exitFullscreen) {
+      return; // Fullscreen WebAPI not found
     }
+
+    this.document.exitFullscreen();
+    this.isFullScreen = false;
   }
 }

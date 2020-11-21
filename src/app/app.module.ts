@@ -30,7 +30,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     RouterModule.forRoot([
       {
-        path: 'wsplayer',
+        path: 'player',
         component: PlayerComponent,
       },
       {
