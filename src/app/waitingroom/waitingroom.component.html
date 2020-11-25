@@ -1,1 +1,55 @@
-<p>waitingroom works!</p>
+<div fxLayout=”row” fxLayoutAlign="center center">
+  <mat-card class="example-card">
+    <mat-card-content>
+      <mat-grid-list cols="2">
+        <mat-grid-tile class="left">
+          <mat-card class="userList">
+            <mat-card-header>
+              <h2>Partecipanti</h2>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="scroll">
+              <mat-list fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="0.5vw">
+                <app-user-card mat-list-item></app-user-card>
+              </mat-list>
+            </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-card class="right" fxLayout="column" fxLayoutAlign="center">
+            <mat-card-header fxLayoutAlign="center center">
+              <mat-card-title fxLayoutAlign="center center">{{ greet }} 👋</mat-card-title>
+              <mat-card-subtitle>Welcome to {{name_group}}</mat-card-subtitle>
+            </mat-card-header>
+            <br>
+            <mat-card-content>
+                <form class="example-form" fxLayout="column" fxLayoutAlign="center space-around">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Room Code</mat-label>
+                    <input matInput placeholder="Ex. 123456-abcdef-1a2b3c">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Avatar</mat-label>
+                    <mat-select [(value)]="selected">
+                      <mat-option value="dog">Dog</mat-option>
+                      <mat-option value="cat">Cat</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Nickname</mat-label>
+                    <input matInput placeholder="Ex. User1">
+                  </mat-form-field>
+                </form>
+              <div fxLayoutAlign="center center" fxLayoutGap="1.5vw" class="margintop">
+                <button mat-raised-button color="primary">Join Room</button>
+                <button mat-button color="primary">Create Room</button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+</div>

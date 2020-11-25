@@ -259,7 +259,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     if (!this.document.exitFullscreen) {
       return; // Fullscreen WebAPI not found
     }
-
     this.document.exitFullscreen();
     this.isFullScreen = false;
   }
