@@ -274,3 +274,18 @@ svg {
 .mat-dialog-title{
   text-align: center;
 }
+
+.title{
+  color: white;
+  margin: 0px;
+}
+
+.center{
+  text-align: center;
+  margin-top: 0;
+}
+
+.subtitle{
+  color: white;
+  font-size: 15px;
+}

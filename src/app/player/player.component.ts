@@ -74,8 +74,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   temp = 0;
 
-  title = '';
-  subtitle = '';
+  title = 'Banning and friends';
+  subtitle = 'Io sono leggenda';
 
   @ViewChild('videoRef') divView: ElementRef;
 
