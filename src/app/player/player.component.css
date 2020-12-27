@@ -98,6 +98,12 @@ video {
   color: #fff;
 }
 
+.right-controls {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
 .volume-controls {
   display: flex;
   align-items: center;
@@ -115,42 +121,10 @@ video {
   opacity: 1;
 }
 
-button {
-  cursor: pointer;
-  position: relative;
-  margin-right: 7px;
-  font-size: 20px;
-  padding: 3px;
-  border: none;
-  outline: none;
+.transparent-button {
   background-color: transparent;
-}
-
-button * {
-  pointer-events: none;
-}
-
-button::before {
-  content: attr(data-title);
-  position: absolute;
-  display: none;
-  right: 0;
-  top: -50px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-weight: bold;
-  padding: 4px 6px;
-  word-break: keep-all;
-  white-space: pre;
-}
-
-button:hover::before {
-  display: inline-block;
-}
-
-.fullscreen-button {
-  margin-right: 0;
-  font-size: 20px;
+  box-sizing: border-box;
+  border: 3px solid transparent;  
 }
 
 .pip-button svg {
