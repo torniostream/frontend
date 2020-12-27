@@ -33,15 +33,15 @@ import { WaitingroomComponent } from './waitingroom/waitingroom.component';
     MatFormFieldModule,
     FormsModule,
     RouterModule.forRoot([
-      {
+    {
         path: 'player',
         component: PlayerComponent,
-      },
-      {
+    },
+    {
         path: '**',
         component: PlayerComponent,
-      }
-    ]),
+    }
+], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
   ],
   providers: [],
