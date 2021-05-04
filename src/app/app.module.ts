@@ -56,15 +56,15 @@ import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
     MatMenuModule,
     MatIconModule,
     RouterModule.forRoot([
-      {
+    {
         path: 'player',
         component: PlayerComponent,
-      },
-      {
+    },
+    {
         path: '**',
         component: WaitingroomComponent,
-      }
-    ]),
+    }
+], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
   ],
   providers: [],
