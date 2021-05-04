@@ -1,0 +1,55 @@
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+            Room name
+            </mat-panel-title>
+            <mat-panel-description>
+              Room Name
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>
+            <mat-form-field appearance="legacy">
+                <mat-label>Room name</mat-label>
+                <input matInput placeholder="Placeholder" [(ngModel)]="roomName">
+                <mat-icon matSuffix>meeting_room</mat-icon>
+            </mat-form-field>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Movie Link
+            </mat-panel-title>
+            <mat-panel-description>
+                Insert Movie link
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>
+            <mat-form-field appearance="legacy">
+                <mat-label>Movie link</mat-label>
+                <input matInput placeholder="Placeholder" [(ngModel)]="filmLink" > 
+                <mat-icon matSuffix>movie</mat-icon>
+            </mat-form-field>
+        </p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Generate Link
+            </mat-panel-title>
+            <mat-panel-description>
+                Generare il link da inviare agli altri partecipanti
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <button class="mr-3" mat-raised-button color="primary" (click)="generateLink()">Generate Link</button>
+        <div *ngIf="generatedLink">
+        <mat-form-field class="example-full-width">
+            <input matInput value="generatedLink">
+          </mat-form-field>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+

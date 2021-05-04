@@ -11,8 +11,8 @@ import { AvatarComponent } from '../avatar/avatar.component';
 })
 export class WaitingroomComponent implements OnInit {
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {
-  }
+  newRoom: boolean = false;
+  buttonTitle = "Lets go into the jungle";
 
   greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
   greet: string;
@@ -25,6 +25,10 @@ export class WaitingroomComponent implements OnInit {
   prova: User = { nickname: "Mulaz1", avatar: null, isAdmin: null };
 
   public users: Array<User> = new Array<User>();
+
+
+  constructor(private api: ApiService, private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.greet = this.getGreeting();
@@ -59,5 +63,13 @@ export class WaitingroomComponent implements OnInit {
   getNewUser(){
     console.log(this.user);
     this.user.isAdmin = false;
+    this.users.push(this.user);
   }
+
+  CreateNewRoom(){
+    this.newRoom = !this.newRoom;
+    if(this.newRoom) this.buttonTitle = "close admin section";
+    else this.buttonTitle = "Lets go into the jungle";
+  }
+
 }

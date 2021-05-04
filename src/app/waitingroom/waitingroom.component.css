@@ -1,75 +1,7 @@
-/* 
-.example-card {
-  width: 45vw;
-  height: 31vh;
-  margin-top: 10vh;
-  display: inline-block;
-  box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 0;
-  border-radius: 25px;
-} */
-
-/* .left {
-  background-image: url("../../images/image.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  height: 11vh;
-}
-
-.title {
-  position: absolute;
-  margin-top: 0;
-  font-size: 30px;
-}
-
-.right{
-  width: 70%;
-  transition: none !important;
-  box-shadow: none !important;
-  font-size: 1vh;
-
-}
-
-.margintop{
-  margin-top: 5vh;
-}
-.scroll{
-  overflow-y: scroll;
-  overflow: hidden;
-}
-::-webkit-scrollbar{
-  display: none;
-}
-.mat-form-field-label {
-  text-align: center;
-}
-
-.example-header-image {
-  background-image: url("../../images/image.jpg");
-  background-size: cover;
-  margin-bottom: 7px;
-}
-
-.container{ 
-  height: 11vh;
-  padding: 0;
-}
- */
-
  .mat-form-field-label {
     text-align: center;
   }
-  
- body{
-     margin-top:20px;
-     /* background-image: url("../../images/image.jpg");
-     background-position: center;
-    background-repeat: no-repeat; */
 
-}
- 
  /************************************************
    ************************************************
                    Users Container
@@ -87,13 +19,24 @@
      flex-direction: column;
  }
  
- 
  /************************************************
    ************************************************
                        Users
    ************************************************
  ************************************************/
- 
+ .sfondo{
+    background-image: url("/assets/images/image.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+ }
+
+ .waitingroom{
+    margin-top: 30rem;
+    width: 100%;
+    height: 100%;
+}
+
  .users {
      padding: 0;
  }
@@ -216,7 +159,7 @@
                    Chat right side
    ************************************************
  ************************************************/
- 
+
  .selected-user {
      width: 100%;
      padding: 0 15px;

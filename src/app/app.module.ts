@@ -24,8 +24,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import { AvatarComponent } from './avatar/avatar.component';
 import {MatMenuModule} from '@angular/material/menu';
-import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component'; 
-
+import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
+import { AdminComponent } from './admin/admin.component';
+import {MatStepperModule} from '@angular/material/stepper'; 
 
 @NgModule({
   declarations: [
@@ -36,12 +37,14 @@ import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
     WaitingroomComponent,
     AvatarComponent,
     AvatarMenuComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
     MatCardModule,
     CommonModule,
     MatInputModule,
+    MatStepperModule,
     MatGridListModule,
     MatSliderModule,
     MatDialogModule,
