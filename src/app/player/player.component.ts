@@ -143,7 +143,7 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       date.setSeconds(dur/1000);
       this.durationTot = date.toISOString().substr(11, 8);
     });
-    this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
+    // this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
   }
 
   toggleMute() {

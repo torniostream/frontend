@@ -3,6 +3,22 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from 'src/environments/environment';
 import * as kurentoUtils from 'kurento-utils';
 import { Observable, Subject, timer } from 'rxjs';
+import { filter, pluck } from 'rxjs/operators';
+import { Error } from '../models/error';
+import { User } from '../models/user';
+
+interface UserEvent {
+  event: Event,
+  user: User,
+}
+
+enum Event {
+  Join = 1,
+  Leave,
+  Pause,
+  Resume,
+  Stop,
+}
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +29,6 @@ export class ApiService {
   );
 
   private webRtcPeer: any;
-  // position: any;
   isSeekable = false;
 
   initSeekable = 0;
@@ -21,6 +36,10 @@ export class ApiService {
   duration: Subject<number> = new Subject<number>();
   position: Subject<number> = new Subject<number>();
   isPlaying: Subject<boolean> = new Subject<boolean>();
+
+  errSubject: Subject<Error> = new Subject<Error>();
+  userEventSubject: Subject<UserEvent> = new Subject<UserEvent>();
+  uuidSubject: Subject<string> = new Subject<string>();
 
   constructor() {
     this.myWebSocket.subscribe(
@@ -38,7 +57,6 @@ export class ApiService {
   }
 
   pause() {
-    console.log('Pausing video ...');
     const message = {
       id : 'pause'
     };
@@ -46,22 +64,51 @@ export class ApiService {
   }
 
   resume() {
-    console.log('Resuming video ...');
     const message = {
       id : 'resume'
     };
     this.sendMessage(message);
   }
 
-  getIsPlaying(): Observable<boolean> {
-    return this.isPlaying.asObservable();
+  onBackendError(): Observable<Error> {
+    return this.errSubject.asObservable();
+  }
+
+  onUserJoin(): Observable<User> {
+    return this.userEventSubject.pipe(
+      filter((event) => event.event === Event.Join),
+      pluck("user"),
+      );
+  }
+
+  onUserLeave(): Observable<User> {
+    return this.userEventSubject.pipe(
+      filter((event) => event.event === Event.Leave),
+      pluck("user"),
+    );
+  }
+
+  onUserResumed(): Observable<User> {
+    return this.userEventSubject.pipe(
+      filter((e) => e.event === Event.Resume),
+      pluck("user"),
+    );
+  }
+
+  onUserPaused(): Observable<User> {
+    return this.userEventSubject.pipe(
+      filter((e) => e.event === Event.Pause),
+      pluck("user"),
+    )
+  }
+
+  getUUID(): Observable<string> {
+    return this.uuidSubject.asObservable();
   }
 
   private onMessage(message) {
     console.log(message);
     const parsedMessage = message;
-
-    console.log('Received message: ' + message);
 
     switch (parsedMessage.id) {
     case 'startResponse':
@@ -70,22 +117,27 @@ export class ApiService {
           return console.error(error);
         }
       });
-      this.isPlaying.next(true);
-      // startResponse(parsedMessage);
       break;
     case 'error':
-      console.log('Error message from server: ' + parsedMessage.message);
-      this.isPlaying.next(false);
+      this.errSubject.next({message: parsedMessage.message});
       break;
     case 'paused':
-      this.isPlaying.next(false);
+      this.userEventSubject.next({event: Event.Pause, user: parsedMessage.initiator});
       break;
     case 'resumed':
-      this.isPlaying.next(true);
+      this.userEventSubject.next({event: Event.Resume, user: parsedMessage.initiator});
+      break;
+    case 'newUser':
+      this.userEventSubject.next({event: Event.Join, user: parsedMessage.user});
+      break;
+    case 'userLeft':
+      this.userEventSubject.next({event: Event.Leave, user: parsedMessage.user})
+      break;
+    case 'uuid':
+      this.uuidSubject.next(parsedMessage.uuid);
       break;
     case 'playEnd':
-      this.isPlaying.next(false);
-      // playEnd();
+      this.userEventSubject.next({ event: Event.Stop, user: null });
       break;
     case 'videoInfo':
       this.showVideoData(parsedMessage);
