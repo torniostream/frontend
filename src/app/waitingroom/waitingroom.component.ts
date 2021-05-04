@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { User } from '../models/user';
+import { AvatarComponent } from '../avatar/avatar.component';
 
-export interface User{
-  nickname: string;
-  avatarId: number;
-  state: string;
-}
 @Component({
   selector: 'app-waitingroom',
   templateUrl: './waitingroom.component.html',
@@ -14,7 +11,7 @@ export interface User{
 })
 export class WaitingroomComponent implements OnInit {
 
-  constructor(private api: ApiService,private route: ActivatedRoute) {
+  constructor(private api: ApiService, private route: ActivatedRoute) {
   }
 
   greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
@@ -24,10 +21,10 @@ export class WaitingroomComponent implements OnInit {
   nickname: string;
   roomId: string;
 
+  user: User = { nickname: null, avatar: null, isAdmin: null };
+  prova: User = { nickname: "Mulaz1", avatar: null, isAdmin: null };
 
   public users: Array<User> = new Array<User>();
-
-  prova: User;
 
   ngOnInit(): void {
     this.greet = this.getGreeting();
@@ -37,8 +34,8 @@ export class WaitingroomComponent implements OnInit {
 
     //prova
     this.prova.nickname = "Mulaz1";
-    this.prova.avatarId = 1;
-    this.prova.state = "Partecipant";
+    this.prova.avatar = { id: 1, path: "/assets/images/avatars/avatar1.png" };
+    this.prova.isAdmin = false;
     this.users.push(this.prova);
     console.log(this.users);
   }
@@ -47,13 +44,20 @@ export class WaitingroomComponent implements OnInit {
     return this.greets[Math.floor(Math.random() * this.greets.length)];
   }
 
-  getParticipant(){
+  getParticipant() {
     //this.api.newParticipant().subscribe((user) => this.users.push(user));
   }
 
-  removeParticipant(){
+  removeParticipant() {
     //this.api.newParticipant().subscribe((user) => this.users.remove(user));
   }
 
+  setAvatar(avatar) {
+    this.user.avatar = avatar;
+  }
 
+  getNewUser(){
+    console.log(this.user);
+    this.user.isAdmin = false;
+  }
 }

@@ -21,6 +21,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
+import { AvatarComponent } from './avatar/avatar.component';
+import {MatMenuModule} from '@angular/material/menu';
+import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component'; 
+
 
 @NgModule({
   declarations: [
@@ -28,7 +33,9 @@ import {MatSelectModule} from '@angular/material/select';
     PlayerComponent,
     RoomDialogComponent,
     UserCardComponent,
-    WaitingroomComponent
+    WaitingroomComponent,
+    AvatarComponent,
+    AvatarMenuComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +53,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatExpansionModule,
     FormsModule,
     MatListModule,
+    MatMenuModule,
+    MatIconModule,
     RouterModule.forRoot([
       {
         path: 'player',

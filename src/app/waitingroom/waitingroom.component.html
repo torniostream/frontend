@@ -1,55 +1,91 @@
-<div fxLayout=”row” fxLayoutAlign="center center">
-  <mat-card class="example-card">
-    <mat-card-content>
-      <mat-grid-list cols="2">
-        <mat-grid-tile class="left">
-          <mat-card class="userList">
-            <mat-card-header>
-              <h2>Partecipanti</h2>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="scroll">
-              <mat-list fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="0.5vw">
-                <app-user-card mat-list-item></app-user-card>
-              </mat-list>
-            </div>
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-card class="right" fxLayout="column" fxLayoutAlign="center">
-            <mat-card-header fxLayoutAlign="center center">
-              <mat-card-title fxLayoutAlign="center center">{{ greet }} 👋</mat-card-title>
-              <mat-card-subtitle>Welcome to {{name_group}}</mat-card-subtitle>
-            </mat-card-header>
-            <br>
-            <mat-card-content>
-                <form class="example-form" fxLayout="column" fxLayoutAlign="center space-around">
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Room Code</mat-label>
-                    <input matInput placeholder="Ex. 123456-abcdef-1a2b3c">
-                  </mat-form-field>
-                  <mat-form-field appearance="fill">
-                    <mat-label>Avatar</mat-label>
-                    <mat-select [(value)]="selected">
-                      <mat-option value="dog">Dog</mat-option>
-                      <mat-option value="cat">Cat</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+<!-- <mat-card class="mr-5 ml-5"fxLayout="column" fxLayoutAlign="center">
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title fxLayoutAlign="center center">{{ greet }} 👋</mat-card-title>
+        <mat-card-subtitle>Welcome to {{name_group}}</mat-card-subtitle>
+      </mat-card-header>
+      <br>
+      <mat-card-content>
+          <form class="example-form" fxLayout="column" fxLayoutAlign="center space-around">
+            <mat-form-field class="example-full-width">
+              <mat-label>Room Code</mat-label>
+              <input matInput placeholder="Ex. 123456-abcdef-1a2b3c">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Avatar</mat-label>
+              <mat-select [(value)]="selected">
+                <mat-option value="dog">Dog</mat-option>
+                <mat-option value="cat">Cat</mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Nickname</mat-label>
-                    <input matInput placeholder="Ex. User1">
-                  </mat-form-field>
-                </form>
-              <div fxLayoutAlign="center center" fxLayoutGap="1.5vw" class="margintop">
-                <button mat-raised-button color="primary">Join Room</button>
-                <button mat-button color="primary">Create Room</button>
+            <mat-form-field class="example-full-width">
+              <mat-label>Nickname</mat-label>
+              <input matInput placeholder="Ex. User1">
+            </mat-form-field>
+          </form>
+        <div fxLayoutAlign="center center" fxLayoutGap="1.5vw" class="margintop">
+          <button mat-raised-button color="primary">Join Room</button>
+          <button mat-button color="primary">Create Room</button>
+        </div>
+      </mat-card-content>
+    </mat-card> -->
+<div class="container mt-5">
+  <!-- Content wrapper start -->
+  <div class="content-wrapper">
+
+    <!-- Row start -->
+    <div class="row gutters">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card m-0">
+          <!-- Row start -->
+          <div class="row no-gutters">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+              <div class="users-container text-center">
+                <ul class="users">
+                  <li class="person" *ngFor="let user of users">
+                    <div class="user">
+                      <img [src]="user.avatar.path">
+                      <!-- <span class="status busy"></span> -->
+                    </div>
+                    <!-- username -->
+                    <p class="name-time">
+                      <span class="name">{{user.nickname}}</span>
+                    </p>
+                  </li>
+
+                </ul>
               </div>
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-    </mat-card-content>
-  </mat-card>
-</div>
+            </div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+              <!-- <div class="selected-user">
+                                  <span>To: <span class="name">Emily Russell</span></span>
+                              </div> -->
+              <div class="container-fluid p-3 text-center">
+                <h3 class="mt-4">{{greet}}</h3>
+                <h5 class="mt-4 mb-4">Waiting Room</h5>
+
+                      <div class="d-flex justify-content-center">
+                        <mat-form-field appearance="legacy" class="mr-5">
+                          <mat-label>Enter Nickname</mat-label>
+                          <input matInput #input maxlength="20" placeholder="Ex. Nougat" [(ngModel)]="user.nickname">
+                          <mat-icon matSuffix>smart_toy</mat-icon>
+                        </mat-form-field>
+                      <app-avatar (newAvatarEvent) = "setAvatar($event)"></app-avatar>
+                  </div>
+                  <div class="example-button-row mt-4 mb-5">
+                    <button mat-raised-button color="primary" (click) = "getNewUser()">Join</button>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+            
+            <!-- Row end -->
+          </div>
+      </div>
+      <!-- Row end -->
+
+    </div>
+    <!-- Content wrapper end -->
+
+  </div>
