@@ -1,21 +1,20 @@
-import { Component, OnInit , ComponentRef,
-  ComponentFactoryResolver,
-  ViewContainerRef,
-  ViewChild,
+import {
+  Component, OnInit,
   Output,
-  EventEmitter} from '@angular/core';
-import {Avatar} from '../models/avatar';
+  EventEmitter
+} from '@angular/core';
+import { Avatar } from '../models/avatar';
 
 @Component({
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.css']
 })
-export class AvatarComponent implements OnInit{
+export class AvatarComponent implements OnInit {
   boxShow = false;
   @Output() newAvatarEvent = new EventEmitter<Avatar>();
   selectedAvatar: Avatar;
-  
+
   avatarList: Avatar[] = [
     {
       id: 1, path: "/assets/images/avatars/avatar1.png"
@@ -49,8 +48,8 @@ export class AvatarComponent implements OnInit{
     }
   ]
 
-  ngOnInit(): void {  
-    this.boxShow= false;
+  ngOnInit(): void {
+    this.boxShow = false;
     this.selectedAvatar = this.getAvatar();
     this.newAvatarEvent.emit(this.selectedAvatar);
   }
@@ -59,16 +58,16 @@ export class AvatarComponent implements OnInit{
     return this.avatarList[Math.floor(Math.random() * this.avatarList.length)];
   }
 
-  click() : void{
-    this.boxShow =! this.boxShow;
+  click(): void {
+    this.boxShow = !this.boxShow;
     console.log('ciao');
   }
 
-  close(){
+  close() {
     this.boxShow = false;
   }
 
-  avatarSelect(avatar){
+  avatarSelect(avatar) {
     this.selectedAvatar = avatar;
     this.boxShow = false;
     this.newAvatarEvent.emit(avatar);

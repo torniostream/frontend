@@ -5,7 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
-import { RoomDialogComponent, PlayerComponent } from './player/player.component';
+import { PlayerComponent } from './player/player.component';
 import {MatCardModule} from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,7 +32,6 @@ import {MatStepperModule} from '@angular/material/stepper';
   declarations: [
     AppComponent,
     PlayerComponent,
-    RoomDialogComponent,
     UserCardComponent,
     WaitingroomComponent,
     AvatarComponent,

@@ -196,7 +196,7 @@ export class ApiService {
     return this.duration.asObservable();
   }
 
-  registerToRoom(roomid: string, videoelement: any) {
+  registerToRoom(roomid: string, nickname: string, videoelement: any) {
     const userMediaConstraints = {
       audio : true,
       video : true
@@ -210,6 +210,7 @@ export class ApiService {
 
         const message = {
           id : 'onIceCandidate',
+
           candidate
         };
         this.sendMessage(message);
@@ -233,6 +234,7 @@ export class ApiService {
         const message = {
           id : 'register',
           sdpOffer,
+          nickname,
           roomid
         };
         this.sendMessage(message);

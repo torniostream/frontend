@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { User } from '../models/user';
-import { AvatarComponent } from '../avatar/avatar.component';
+import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-waitingroom',
@@ -24,6 +24,9 @@ export class WaitingroomComponent implements OnInit {
   user: User = { nickname: null, avatar: null, isAdmin: null };
   prova: User = { nickname: "Mulaz1", avatar: null, isAdmin: null };
 
+  elementVideoRef: ElementRef;
+
+  public enabled: boolean = true;
   public users: Array<User> = new Array<User>();
 
 
@@ -62,6 +65,8 @@ export class WaitingroomComponent implements OnInit {
 
   getNewUser(){
     console.log(this.user);
+    this.api.registerToRoom("48854abc-b238-4140-bfe4-5ef9615db38b", this.user.nickname, this.elementVideoRef.nativeElement);
+
     this.user.isAdmin = false;
     this.users.push(this.user);
   }
@@ -72,4 +77,12 @@ export class WaitingroomComponent implements OnInit {
     else this.buttonTitle = "Lets go into the jungle";
   }
 
+  addVideo(video: ElementRef) {
+    this.elementVideoRef = video;
+  }
+
+  setPlaying(isPlaying: boolean) {
+    // console.log(isPlaying);
+    // TODO: do something
+  }
 }

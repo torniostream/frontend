@@ -2,13 +2,14 @@ import {
   Component,
   ViewChild,
   ElementRef,
-  AfterViewInit,
+  EventEmitter,
   OnInit,
+  AfterViewChecked,
   Inject,
   HostListener,
+  Output,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '../services/api.service';
 import { DOCUMENT } from '@angular/common';
 import {
   MatDialog,
@@ -16,47 +17,21 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 
-export interface DialogData {
-  room: string;
-}
-
-@Component({
-  selector: 'app-room-dialog',
-  templateUrl: 'room.dialog.html',
-  styleUrls: ['./player.component.css'],
-})
-export class RoomDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<RoomDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-    this.greet = this.getGreeting();
-  }
-
-  greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
-  greet: string;
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-  getGreeting(): string {
-    return this.greets[Math.floor(Math.random() * this.greets.length)];
-  }
-}
-
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css'],
 })
-export class PlayerComponent implements AfterViewInit, OnInit {
+export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
-    private api: ApiService,
     @Inject(DOCUMENT) private document: Document,
     public dialog: MatDialog,
     private route: ActivatedRoute
   ) {}
+
   Playing = false;
+
+  @Output() playEvent = new EventEmitter<boolean>();
 
   elem: any;
   isFullScreen = false;
@@ -78,11 +53,10 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   subtitle = 'Io sono leggenda';
 
   @ViewChild('videoRef') divView: ElementRef;
+  @Output() video = new EventEmitter<ElementRef>();
 
   controlOpacity = 1;
   controlTimeout: any;
-
-  roomId: string;
 
   @HostListener('document:fullscreenchange', ['$event'])
   @HostListener('document:webkitfullscreenchange', ['$event'])
@@ -90,22 +64,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   @HostListener('document:MSFullscreenChange', ['$event'])
   fullscreenmodes(event) {
     this.chkScreenMode();
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(RoomDialogComponent, {
-      width: '40rem',
-      height: '20rem',
-      data: { room: this.roomId },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === '') {
-        console.log('Error: Insert code room again');
-      }
-      this.api.registerToRoom(result, this.divView.nativeElement);
-      this.audioon = !this.divView.nativeElement.muted;
-    });
   }
 
   muted() {
@@ -119,31 +77,13 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.roomId = params.room;
-    });
     this.chkScreenMode();
     this.elem = document.documentElement;
-    this.api.getPosition().subscribe((pos) => {
-      this.position = pos;
-      console.log(pos);
-      let totalSeconds = 0;
-      totalSeconds = totalSeconds + pos / 1000;
+    this.video.emit(this.divView);
+  }
 
-      const time = new Date(null);
-      time.setSeconds(totalSeconds);
-      this.timeLeft = time.toISOString().substr(11, 8);
-    });
-    this.api.getVideoDuration().subscribe((dur) => {
-      if (dur <= 0) {
-        console.log('Negative duration!');
-      }
-      this.duration = dur;
-      var date = new Date(null);
-      date.setSeconds(dur/1000);
-      this.durationTot = date.toISOString().substr(11, 8);
-    });
-    // this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
+  ngAfterViewChecked(): void {
+    this.video.emit(this.divView);
   }
 
   toggleMute() {
@@ -175,12 +115,9 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   onSeek(event) {
     const value = event.value;
-    console.log(value);
-    this.api.doSeek(value);
   }
 
   seekRelative(sec: number) {
-    this.api.doSeek(this.position + sec * 1000);
   }
 
   chkScreenMode() {
@@ -220,12 +157,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   togglePlaying() {
-    this.Playing ? this.api.pause() : this.api.resume();
     this.Playing = !this.Playing;
-  }
-
-  ngAfterViewInit(): void {
-    this.openDialog();
+    this.playEvent.emit(this.Playing);
   }
 
   // Fullscreen button
