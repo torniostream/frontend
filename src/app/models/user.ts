@@ -4,4 +4,5 @@ export interface User{
     nickname: string;
     avatar: Avatar;
     isAdmin: boolean;
+    isInhibited: boolean;
 }

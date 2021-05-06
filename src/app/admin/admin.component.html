@@ -46,9 +46,7 @@
         </mat-expansion-panel-header>
         <button class="mr-3" mat-raised-button color="primary" (click)="generateLink()">Generate Link</button>
         <div *ngIf="generatedLink">
-        <mat-form-field class="example-full-width">
-            <input matInput value="generatedLink">
-          </mat-form-field>
+        <p>{{ generatedLink }} </p>>
         </div>
     </mat-expansion-panel>
 </mat-accordion>

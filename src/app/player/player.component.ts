@@ -8,6 +8,7 @@ import {
   Inject,
   HostListener,
   Output,
+  Input,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
@@ -30,6 +31,9 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   ) {}
 
   Playing = false;
+
+  @Input() play: boolean;
+  @Output() playChange = new EventEmitter<boolean>();
 
   elem: any;
   isFullScreen = false;
@@ -158,12 +162,11 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
       case 'f':
         this.toggleFullscreen();
     }
-    console.log(event.key);
   }
 
   togglePlaying() {
-    this.Playing = !this.Playing;
-    this.playEvent.emit(this.Playing);
+    this.play = !this.play;
+    this.playChange.emit(this.play);
   }
 
   // Fullscreen button
