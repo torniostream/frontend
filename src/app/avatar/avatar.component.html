@@ -3,16 +3,15 @@
 </div>
 <div *ngIf="boxShow">
     <div class="box arrow mt-3 ml-4" tabindex="0">
-<div class="d-flex justify-content-between">
-    <p id="avatar-title">Choose your avatar</p>
-    <i class="flex-right fa fa-close text-white" (click)="close()"></i>
-</div>
-    <ul class="avatar-collection">
-        <li class="item" *ngFor = "let avatar of avatarList">
-            <img class="avatar avatar-item" [src]="avatar.path" (click) = "avatarSelect(avatar)">
-        </li>
-
-    </ul>
-</div>
+        <div class="d-flex justify-content-between">
+            <p id="avatar-title">Choose your avatar</p>
+            <i class="flex-right fa fa-close text-white" (click)="close()"></i>
+        </div>
+        <ul class="avatar-collection">
+            <li class="item" *ngFor="let avatar of avatarList">
+                <img class="avatar avatar-item" [src]="avatar.path" (click)="avatarSelect(avatar)">
+            </li>
+        </ul>
+    </div>
     <!-- <app-avatar-menu></app-avatar-menu> -->
 </div>

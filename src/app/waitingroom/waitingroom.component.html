@@ -1,4 +1,4 @@
-<app-player (playEvent)="setPlaying($event)" (video)="addVideo($event)" *ngIf="enabled"></app-player>
+<app-player (playEvent)="setPlaying($event)" (video)="addVideo($event)" (seekEvent)="getSeek($event)" *ngIf="enabled"></app-player>
 
 <div class="container-fluid waitingroom" *ngIf="!enabled">
   <!-- Content wrapper start -->

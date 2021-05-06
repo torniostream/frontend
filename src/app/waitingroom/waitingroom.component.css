@@ -19,11 +19,6 @@
      flex-direction: column;
  }
  
- /************************************************
-   ************************************************
-                       Users
-   ************************************************
- ************************************************/
  .sfondo{
     background-image: url("/assets/images/image.jpg");
     background-repeat: no-repeat;
@@ -33,8 +28,7 @@
 
  .waitingroom{
     margin-top: 33vh;
-    width: 60vw;
-    height: 50vh;
+    width: 50vw;
 }
 
  .users {

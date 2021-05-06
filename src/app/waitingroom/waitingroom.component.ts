@@ -86,4 +86,12 @@ export class WaitingroomComponent implements OnInit {
     // console.log(isPlaying);
     // TODO: do something
   }
+
+  setSeek(){
+
+  }
+
+  getSeek(seek: number){
+
+  }
 }

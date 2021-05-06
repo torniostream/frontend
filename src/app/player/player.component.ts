@@ -31,8 +31,6 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
 
   Playing = false;
 
-  @Output() playEvent = new EventEmitter<boolean>();
-
   elem: any;
   isFullScreen = false;
 
@@ -53,7 +51,11 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   subtitle = 'Io sono leggenda';
 
   @ViewChild('videoRef') divView: ElementRef;
+  
+
+  @Output() playEvent = new EventEmitter<boolean>();
   @Output() video = new EventEmitter<ElementRef>();
+  @Output() seekEvent = new EventEmitter<number>();
 
   controlOpacity = 1;
   controlTimeout: any;
@@ -112,9 +114,12 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
       this.elem.requestPictureInPicture();
     }
   }
-
+ 
   onSeek(event) {
     const value = event.value;
+    console.log(value);
+    this.seekEvent.emit(value);
+    
   }
 
   seekRelative(sec: number) {
@@ -194,5 +199,9 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     }
     this.document.exitFullscreen();
     this.isFullScreen = false;
+  }
+
+  notification(){
+
   }
 }
