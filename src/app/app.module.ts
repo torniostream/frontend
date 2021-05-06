@@ -4,7 +4,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-
 import { PlayerComponent } from './player/player.component';
 import {MatCardModule} from '@angular/material/card';
 import { CommonModule } from '@angular/common';
@@ -27,6 +26,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
 import { AdminComponent } from './admin/admin.component';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { NotificationComponent } from './notification/notification.component'; 
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {MatStepperModule} from '@angular/material/stepper';
     AvatarComponent,
     AvatarMenuComponent,
     AdminComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatDialogModule,
     MatSelectModule,
     MatButtonModule,
+    MatSnackBarModule,
     MatFormFieldModule,
     MatSlideToggleModule,
     FlexLayoutModule,

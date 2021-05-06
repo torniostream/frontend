@@ -9,6 +9,7 @@ import {
   HostListener,
   Output,
 } from '@angular/core';
+import { NotificationComponent } from '../../app/notification/notification.component';
 import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -16,6 +17,12 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-player',
@@ -26,8 +33,12 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     public dialog: MatDialog,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
+  ) { }
+  //notification
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   Playing = false;
 
@@ -51,7 +62,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   subtitle = 'Io sono leggenda';
 
   @ViewChild('videoRef') divView: ElementRef;
-  
+
 
   @Output() playEvent = new EventEmitter<boolean>();
   @Output() video = new EventEmitter<ElementRef>();
@@ -64,6 +75,8 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   @HostListener('document:webkitfullscreenchange', ['$event'])
   @HostListener('document:mozfullscreenchange', ['$event'])
   @HostListener('document:MSFullscreenChange', ['$event'])
+  
+  
   fullscreenmodes(event) {
     this.chkScreenMode();
   }
@@ -114,12 +127,12 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
       this.elem.requestPictureInPicture();
     }
   }
- 
+
   onSeek(event) {
     const value = event.value;
     console.log(value);
     this.seekEvent.emit(value);
-    
+
   }
 
   seekRelative(sec: number) {
@@ -201,7 +214,12 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.isFullScreen = false;
   }
 
-  notification(){
-
+  notification() {
+    this._snackBar.openFromComponent(NotificationComponent, {
+      data: { nickname: "mulaz1", path:'/assets/images/avatars/avatar1.png', command: "Ha premuto PAUESE"},
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 3000,
+    });
   }
 }

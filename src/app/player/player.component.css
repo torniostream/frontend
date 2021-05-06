@@ -278,3 +278,7 @@ svg {
   color: white;
   font-size: 15px;
 }
+
+.transparent-snackbar{
+  background: transparent;
+}
