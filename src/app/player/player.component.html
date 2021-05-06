@@ -30,7 +30,7 @@
 
             <!-- volume slide -->
             <div class="volume-controls">
-              <button data-title="Mute" class="volume-button" id="volume-button" (click)="notification()">
+              <button data-title="Mute" class="volume-button" id="volume-button" (click)="toggleMute()">
                 <svg>
                   <use *ngIf="!audioon" href="#volume-mute"></use>
                   <use *ngIf="audioon && !audiolow" href="#volume-high"></use>

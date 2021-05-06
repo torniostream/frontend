@@ -10,7 +10,7 @@ import {
   Output,
   Input,
 } from '@angular/core';
-import { NotificationComponent } from '../../app/notification/notification.component';
+
 import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -18,11 +18,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -33,13 +29,9 @@ import {
 export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    public dialog: MatDialog,
-    private route: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    public dialog: MatDialog
   ) { }
   //notification
-  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   @Input() play: boolean;
   @Output() playChange = new EventEmitter<boolean>();
@@ -217,12 +209,5 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.isFullScreen = false;
   }
 
-  notification() {
-    this._snackBar.openFromComponent(NotificationComponent, {
-      data: { nickname: "mulaz1", path:'/assets/images/avatars/avatar1.png', command: "Ha premuto PAUESE"},
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-      duration: 3000,
-    });
-  }
+
 }

@@ -2,6 +2,12 @@ import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { User } from '../models/user';
+import { NotificationComponent } from '../../app/notification/notification.component';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-waitingroom',
@@ -11,6 +17,9 @@ import { User } from '../models/user';
 export class WaitingroomComponent implements OnInit, AfterViewInit {
   newRoom: boolean = false;
   buttonTitle = "Lets go into the jungle";
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
   greet: string;
@@ -42,7 +51,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
   // Registered user to the lobby (room)
   public users: Array<User> = new Array<User>();
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {
+  constructor(private api: ApiService, private _snackBar: MatSnackBar) {
   }
 
   ngAfterViewInit(): void {
@@ -53,17 +62,17 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
     this.greet = this.getGreeting();
 
     this.api.onUserResumed().subscribe((u) => {
-      console.log(u.nickname + " has resumed the video.");
+      this.showNotification(u, " has resumed the video.");
       this.play = true;
     });
 
     this.api.onUserPaused().subscribe((u) => {
-      console.log(u.nickname + " has paused the video");
+      this.showNotification(u, " has paused the video");
       this.play = false;
     });
 
-    this.api.onUserJoin().subscribe(u => console.log(u.nickname + " has joined the room!"));
-    this.api.onUserLeave().subscribe(u => console.log(u.nickname + " has left the room."));
+    this.api.onUserJoin().subscribe(u => this.showNotification(u," has joined the room!"));
+    this.api.onUserLeave().subscribe(u => this.showNotification(u, " has left the room."));
 
     this.api.getPosition().subscribe(position => this.position = position);
     this.api.getVideoDuration().subscribe(duration => this.duration = duration);
@@ -104,5 +113,14 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
   setPosition(newPosition: number) {
     this.api.doSeek(newPosition);
+  }
+
+  showNotification(user: User, text: string) {
+    this._snackBar.openFromComponent(NotificationComponent, {
+      data: { nickname: user.nickname, path: user.avatar.path, command: text},
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 3000,
+    });
   }
 }
