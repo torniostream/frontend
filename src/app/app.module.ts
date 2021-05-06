@@ -26,7 +26,7 @@ import { AvatarComponent } from './avatar/avatar.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
 import { AdminComponent } from './admin/admin.component';
-import {MatStepperModule} from '@angular/material/stepper'; 
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   declarations: [

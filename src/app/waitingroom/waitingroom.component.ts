@@ -26,7 +26,7 @@ export class WaitingroomComponent implements OnInit {
 
   elementVideoRef: ElementRef;
 
-  public enabled: boolean = true;
+  public enabled: boolean = false;
   public users: Array<User> = new Array<User>();
 
 
@@ -65,9 +65,10 @@ export class WaitingroomComponent implements OnInit {
 
   getNewUser(){
     console.log(this.user);
-    this.api.registerToRoom("48854abc-b238-4140-bfe4-5ef9615db38b", this.user.nickname, this.elementVideoRef.nativeElement);
-
+    //this.api.registerToRoom("48854abc-b238-4140-bfe4-5ef9615db38b", this.user.nickname, this.elementVideoRef.nativeElement);
     this.user.isAdmin = false;
+    this.enabled = !this.enabled;
+    console.log(this.enabled);
     this.users.push(this.user);
   }
 
