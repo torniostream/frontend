@@ -41,26 +41,27 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  Playing = false;
-
   @Input() play: boolean;
   @Output() playChange = new EventEmitter<boolean>();
+
+  @Input() position: number;
+  @Output() positionChange: EventEmitter<number> = new EventEmitter<number>();
+
+  @Input() duration: number;
 
   elem: any;
   isFullScreen = false;
 
   width = 0;
 
-  position = 0;
-  duration = 0;
+  // position = 0;
+  // duration = 0;
 
   audioon = false;
   audiolow = false;
 
   timeLeft = '00:00';
   durationTot = '00:00';
-
-  temp = 0;
 
   title = 'Banning and friends';
   subtitle = 'Io sono leggenda';
@@ -70,7 +71,6 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
 
   @Output() playEvent = new EventEmitter<boolean>();
   @Output() video = new EventEmitter<ElementRef>();
-  @Output() seekEvent = new EventEmitter<number>();
 
   controlOpacity = 1;
   controlTimeout: any;
@@ -135,8 +135,8 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   onSeek(event) {
     const value = event.value;
     console.log(value);
-    this.seekEvent.emit(value);
-
+    this.positionChange.emit(value);
+    
   }
 
   seekRelative(sec: number) {

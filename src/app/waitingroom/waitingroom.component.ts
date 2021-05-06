@@ -35,6 +35,10 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
   play: boolean = false;
 
+  // Media metadata
+  position: number = 0;
+  duration: number = 100;
+
   // Registered user to the lobby (room)
   public users: Array<User> = new Array<User>();
 
@@ -60,7 +64,9 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
     this.api.onUserJoin().subscribe(u => console.log(u.nickname + " has joined the room!"));
     this.api.onUserLeave().subscribe(u => console.log(u.nickname + " has left the room."));
-    console.log(this.users);
+
+    this.api.getPosition().subscribe(position => this.position = position);
+    this.api.getVideoDuration().subscribe(duration => this.duration = duration);
   }
 
   getGreeting(): string {
@@ -94,5 +100,9 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
   getPlaying(): boolean {
     return this.play;
+  }
+
+  setPosition(newPosition: number) {
+    this.api.doSeek(newPosition);
   }
 }

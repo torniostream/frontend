@@ -1,4 +1,5 @@
-<app-player (playChange)="setPlaying($event)" [play]="play" (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
+<app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)" [duration]="duration"
+  (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
 
 <div class="container-fluid waitingroom" *ngIf="!enabled">
   <!-- Content wrapper start -->
