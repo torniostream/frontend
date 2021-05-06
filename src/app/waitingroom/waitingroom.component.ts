@@ -105,6 +105,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
   setPlaying(isPlaying: boolean) {
     isPlaying ? this.api.resume() : this.api.pause();
+    this.play = isPlaying;
   }
 
   getPlaying(): boolean {

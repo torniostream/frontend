@@ -11,15 +11,7 @@ import {
   Input,
 } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-
-
 
 @Component({
   selector: 'app-player',
@@ -28,10 +20,8 @@ import {
 })
 export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    public dialog: MatDialog
+    @Inject(DOCUMENT) private document: Document
   ) { }
-  //notification
 
   @Input() play: boolean;
   @Output() playChange = new EventEmitter<boolean>();
@@ -59,9 +49,6 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   subtitle = 'Io sono leggenda';
 
   @ViewChild('videoRef') divView: ElementRef;
-
-
-  @Output() playEvent = new EventEmitter<boolean>();
   @Output() video = new EventEmitter<ElementRef>();
 
   controlOpacity = 1;
@@ -71,8 +58,6 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   @HostListener('document:webkitfullscreenchange', ['$event'])
   @HostListener('document:mozfullscreenchange', ['$event'])
   @HostListener('document:MSFullscreenChange', ['$event'])
-  
-  
   fullscreenmodes(event) {
     this.chkScreenMode();
   }
@@ -126,12 +111,8 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
 
   onSeek(event) {
     const value = event.value;
-    console.log(value);
     this.positionChange.emit(value);
     
-  }
-
-  seekRelative(sec: number) {
   }
 
   chkScreenMode() {
@@ -208,6 +189,4 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.document.exitFullscreen();
     this.isFullScreen = false;
   }
-
-
 }
