@@ -1,49 +1,65 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { User } from '../models/user';
-import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-waitingroom',
   templateUrl: './waitingroom.component.html',
   styleUrls: ['./waitingroom.component.css']
 })
-export class WaitingroomComponent implements OnInit {
-
+export class WaitingroomComponent implements OnInit, AfterViewInit {
   newRoom: boolean = false;
   buttonTitle = "Lets go into the jungle";
 
   greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
   greet: string;
+
   name_group = "Pasta al tornio";
   selected = 'option2';
+
+  // Input form bindings
   nickname: string;
-  roomId: string;
+  roomUUID: string;
 
-  user: User = { nickname: null, avatar: null, isAdmin: null };
-  prova: User = { nickname: "Mulaz1", avatar: null, isAdmin: null };
+  user: User = { nickname: null, avatar: null, isAdmin: null, isInhibited: null };
 
+  // Video Element Ref, it's a ugly hack
   elementVideoRef: ElementRef;
 
-  public enabled: boolean = false;
-  public users: Array<User> = new Array<User>();
+  addVideo(video: ElementRef) {
+    this.elementVideoRef = video;
+  }
 
+  public enabled: boolean = false;
+
+  play: boolean = false;
+
+  // Registered user to the lobby (room)
+  public users: Array<User> = new Array<User>();
 
   constructor(private api: ApiService, private route: ActivatedRoute) {
   }
 
+  ngAfterViewInit(): void {
+    this.api.setVideoElement(this.elementVideoRef);
+  }
+
   ngOnInit(): void {
     this.greet = this.getGreeting();
-    // this.route.queryParams.subscribe((params) => {
-    //     this.roomId= params.room;
-    // });
 
-    //prova
-    this.prova.nickname = "Mulaz1";
-    this.prova.avatar = { id: 1, path: "/assets/images/avatars/avatar1.png" };
-    this.prova.isAdmin = false;
-    this.users.push(this.prova);
+    this.api.onUserResumed().subscribe((u) => {
+      console.log(u.nickname + " has resumed the video.");
+      this.play = true;
+    });
+
+    this.api.onUserPaused().subscribe((u) => {
+      console.log(u.nickname + " has paused the video");
+      this.play = false;
+    });
+
+    this.api.onUserJoin().subscribe(u => console.log(u.nickname + " has joined the room!"));
+    this.api.onUserLeave().subscribe(u => console.log(u.nickname + " has left the room."));
     console.log(this.users);
   }
 
@@ -51,25 +67,19 @@ export class WaitingroomComponent implements OnInit {
     return this.greets[Math.floor(Math.random() * this.greets.length)];
   }
 
-  getParticipant() {
-    //this.api.newParticipant().subscribe((user) => this.users.push(user));
-  }
-
-  removeParticipant() {
-    //this.api.newParticipant().subscribe((user) => this.users.remove(user));
-  }
-
   setAvatar(avatar) {
     this.user.avatar = avatar;
   }
 
-  getNewUser(){
-    console.log(this.user);
-    //this.api.registerToRoom("48854abc-b238-4140-bfe4-5ef9615db38b", this.user.nickname, this.elementVideoRef.nativeElement);
-    this.user.isAdmin = false;
+  joinRoom() {
+    this.api.registerToRoom(this.roomUUID, this.user);
+
     this.enabled = !this.enabled;
-    console.log(this.enabled);
     this.users.push(this.user);
+  }
+
+  showPlayer() {
+    this.enabled = true;
   }
 
   CreateNewRoom(){
@@ -78,20 +88,11 @@ export class WaitingroomComponent implements OnInit {
     else this.buttonTitle = "Lets go into the jungle";
   }
 
-  addVideo(video: ElementRef) {
-    this.elementVideoRef = video;
-  }
-
   setPlaying(isPlaying: boolean) {
-    // console.log(isPlaying);
-    // TODO: do something
+    isPlaying ? this.api.resume() : this.api.pause();
   }
 
-  setSeek(){
-
-  }
-
-  getSeek(seek: number){
-
+  getPlaying(): boolean {
+    return this.play;
   }
 }

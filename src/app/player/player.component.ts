@@ -8,6 +8,7 @@ import {
   Inject,
   HostListener,
   Output,
+  Input,
 } from '@angular/core';
 import { NotificationComponent } from '../../app/notification/notification.component';
 import { ActivatedRoute } from '@angular/router';
@@ -41,6 +42,9 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   Playing = false;
+
+  @Input() play: boolean;
+  @Output() playChange = new EventEmitter<boolean>();
 
   elem: any;
   isFullScreen = false;
@@ -171,12 +175,11 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
       case 'f':
         this.toggleFullscreen();
     }
-    console.log(event.key);
   }
 
   togglePlaying() {
-    this.Playing = !this.Playing;
-    this.playEvent.emit(this.Playing);
+    this.play = !this.play;
+    this.playChange.emit(this.play);
   }
 
   // Fullscreen button

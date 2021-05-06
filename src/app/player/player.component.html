@@ -2,8 +2,8 @@
   <div #basePlayer class="video-container" [ngClass]="controlOpacity ? 'cursor-initial' : 'cursor-none'">
     <div class="playback-animation" id="playback-animation">
       <svg class="playback-icons">
-        <use *ngIf="!Playing" href="#play-icon"></use>
-        <use *ngIf="Playing" href="#pause"></use>
+        <use *ngIf="!play" href="#play-icon"></use>
+        <use *ngIf="play" href="#pause"></use>
       </svg>
     </div>
 
@@ -23,8 +23,8 @@
           <div class="left-controls">
             <button data-title="Play" id="play" (click)="togglePlaying()">
               <svg class="playback-icons">
-                <use *ngIf="!Playing" href="#play-icon"></use>
-                <use *ngIf="Playing" href="#pause"></use>
+                <use *ngIf="!play" href="#play-icon"></use>
+                <use *ngIf="play" href="#pause"></use>
               </svg>
             </button>
 

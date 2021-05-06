@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,12 +13,13 @@ export class AdminComponent implements OnInit {
   filmLink: string;
   generatedLink: string;
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit(): void {
+    this.api.getUUID().subscribe(uuid => this.generatedLink = "http://"+environment.baseURL+"/play?room="+uuid);
   }
  
   generateLink(){
-  this.generatedLink = "ciao";
+    this.api.createRoom(this.filmLink, {nickname: "user1", isInhibited: false, isAdmin: false, avatar: {id: 1, path: "/ciao.png"}});
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from 'src/environments/environment';
 import * as kurentoUtils from 'kurento-utils';
@@ -29,6 +29,8 @@ export class ApiService {
   );
 
   private webRtcPeer: any;
+  private videoElem: ElementRef;
+
   isSeekable = false;
 
   initSeekable = 0;
@@ -48,12 +50,16 @@ export class ApiService {
         this.onMessage(msg);
       },
       // Called whenever there is a message from the server
-      err => console.log(err),
+      err => this.errSubject.next(err),
       // Called if WebSocket API signals some kind of error
       () => console.log('complete')
       // Called when connection is closed (for whatever reason)
    );
     timer(0, 1000).subscribe(() => this.getPosition());
+  }
+
+  setVideoElement(video: ElementRef) {
+    this.videoElem = video;
   }
 
   pause() {
@@ -196,14 +202,19 @@ export class ApiService {
     return this.duration.asObservable();
   }
 
-  registerToRoom(roomid: string, nickname: string, videoelement: any) {
+  registerToRoom(roomid: string, user: User) {
+    if (!this.videoElem) {
+      console.error("You need to initialize the video element before trying to access this function.");
+      return;
+    }
+
     const userMediaConstraints = {
       audio : true,
       video : true
     };
 
     const options = {
-      remoteVideo : videoelement,
+      remoteVideo : this.videoElem.nativeElement,
       mediaConstraints : userMediaConstraints,
       onicecandidate : (candidate) => {
         console.log('Local candidate' + JSON.stringify(candidate));
@@ -234,8 +245,59 @@ export class ApiService {
         const message = {
           id : 'register',
           sdpOffer,
-          nickname,
+          user,
           roomid
+        };
+        this.sendMessage(message);
+      });
+    });
+  }
+
+  createRoom(videourl: string, user: User) {
+    if (!this.videoElem) {
+      console.error("You need to initialize the video element before trying to access this function.");
+      return;
+    }
+
+    const userMediaConstraints = {
+      audio : true,
+      video : true
+    };
+
+    const options = {
+      remoteVideo : this.videoElem.nativeElement,
+      mediaConstraints : userMediaConstraints,
+      onicecandidate : (candidate) => {
+        console.log('Local candidate' + JSON.stringify(candidate));
+
+        const message = {
+          id : 'onIceCandidate',
+
+          candidate
+        };
+        this.sendMessage(message);
+      }
+    };
+
+    console.log('User media constraints' + userMediaConstraints);
+
+    this.webRtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, (error) => {
+      if (error) {
+        return console.error(error);
+      }
+
+      this.webRtcPeer.generateOffer((err, sdpOffer) => {
+        if (err) {
+          return console.error('Error generating the offer');
+        }
+
+        console.log('Invoking SDP offer callback function ');
+
+        const message = {
+          id : 'start',
+          sdpOffer,
+          videourl,
+          user
         };
         this.sendMessage(message);
       });
