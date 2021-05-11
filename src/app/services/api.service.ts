@@ -18,6 +18,10 @@ enum Event {
   Pause,
   Resume,
   Stop,
+  Seek,
+  UserInhibited,
+  UserUninhibited,
+  NewAdmin,
 }
 
 @Injectable({
@@ -46,7 +50,6 @@ export class ApiService {
   constructor() {
     this.myWebSocket.subscribe(
       msg => {
-        console.log('message received: ' + msg);
         this.onMessage(msg);
       },
       // Called whenever there is a message from the server
@@ -81,31 +84,42 @@ export class ApiService {
   }
 
   onUserJoin(): Observable<User> {
+    return this.getEventObservable(Event.Join, "user");
+  }
+
+  private getEventObservable(eventToFilter: Event, userField: string): Observable<User> {
     return this.userEventSubject.pipe(
-      filter((event) => event.event === Event.Join),
-      pluck("user"),
-      );
+      filter((event) => event.event === eventToFilter),
+      pluck(userField),
+    );
+  }
+
+  onUserSeek(): Observable<User> {
+    return this.getEventObservable(Event.Seek, "user");
   }
 
   onUserLeave(): Observable<User> {
-    return this.userEventSubject.pipe(
-      filter((event) => event.event === Event.Leave),
-      pluck("user"),
-    );
+    return this.getEventObservable(Event.Leave, "user");
   }
 
   onUserResumed(): Observable<User> {
-    return this.userEventSubject.pipe(
-      filter((e) => e.event === Event.Resume),
-      pluck("user"),
-    );
+    return this.getEventObservable(Event.Resume, "user");
   }
 
   onUserPaused(): Observable<User> {
-    return this.userEventSubject.pipe(
-      filter((e) => e.event === Event.Pause),
-      pluck("user"),
-    )
+    return this.getEventObservable(Event.Pause, "user");
+  }
+
+  onUserInhibit(): Observable<User> {
+    return this.getEventObservable(Event.UserInhibited, "user");
+  }
+
+  onUserUninhibit(): Observable<User> {
+    return this.getEventObservable(Event.UserUninhibited, "user");
+  }
+
+  onUserNewAdmin(): Observable<User> {
+    return this.getEventObservable(Event.NewAdmin, "user");
   }
 
   getUUID(): Observable<string> {
@@ -113,7 +127,6 @@ export class ApiService {
   }
 
   private onMessage(message) {
-    console.log(message);
     const parsedMessage = message;
 
     switch (parsedMessage.id) {
@@ -156,12 +169,20 @@ export class ApiService {
       });
       break;
     case 'seek':
-      console.log (parsedMessage.message);
+      this.userEventSubject.next({ event: Event.Seek, user: parsedMessage.initiator });
+      this.position.next(parsedMessage.newPosition);
       break;
     case 'position':
       this.position.next(parsedMessage.position);
       break;
-    case 'iceCandidate':
+    case 'newAdmin':
+      this.userEventSubject.next({ event: Event.NewAdmin, user: parsedMessage.user });
+      break;
+    case 'userUninhibited':
+      this.userEventSubject.next({ event: Event.UserUninhibited, user: parsedMessage.user });
+      break;
+    case 'userInhibited':
+      this.userEventSubject.next({ event: Event.UserInhibited, user: parsedMessage.user });
       break;
     default:
       console.log('Unrecognized message', parsedMessage);
@@ -217,7 +238,7 @@ export class ApiService {
       remoteVideo : this.videoElem.nativeElement,
       mediaConstraints : userMediaConstraints,
       onicecandidate : (candidate) => {
-        console.log('Local candidate' + JSON.stringify(candidate));
+        // console.log('Local candidate' + JSON.stringify(candidate));
 
         const message = {
           id : 'onIceCandidate',
@@ -228,7 +249,7 @@ export class ApiService {
       }
     };
 
-    console.log('User media constraints' + userMediaConstraints);
+    // console.log('User media constraints' + userMediaConstraints);
 
     this.webRtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, (error) => {
       if (error) {
@@ -240,7 +261,7 @@ export class ApiService {
           return console.error('Error generating the offer');
         }
 
-        console.log('Invoking SDP offer callback function ');
+        // console.log('Invoking SDP offer callback function ');
 
         const message = {
           id : 'register',
@@ -268,7 +289,7 @@ export class ApiService {
       remoteVideo : this.videoElem.nativeElement,
       mediaConstraints : userMediaConstraints,
       onicecandidate : (candidate) => {
-        console.log('Local candidate' + JSON.stringify(candidate));
+        // console.log('Local candidate' + JSON.stringify(candidate));
 
         const message = {
           id : 'onIceCandidate',
@@ -279,7 +300,7 @@ export class ApiService {
       }
     };
 
-    console.log('User media constraints' + userMediaConstraints);
+    // ('User media constraints' + userMediaConstraints);
 
     this.webRtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, (error) => {
       if (error) {
@@ -291,7 +312,7 @@ export class ApiService {
           return console.error('Error generating the offer');
         }
 
-        console.log('Invoking SDP offer callback function ');
+        // console.log('Invoking SDP offer callback function ');
 
         const message = {
           id : 'start',
