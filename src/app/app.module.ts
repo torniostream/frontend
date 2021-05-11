@@ -12,8 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { FormsModule } from '@angular/forms';
-import { UserCardComponent } from './user-card/user-card.component';
+import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { WaitingroomComponent } from './waitingroom/waitingroom.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -23,22 +22,23 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import { AvatarComponent } from './avatar/avatar.component';
 import {MatMenuModule} from '@angular/material/menu';
-import { AvatarMenuComponent } from './avatar-menu/avatar-menu.component';
 import { AdminComponent } from './admin/admin.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { NotificationComponent } from './notification/notification.component'; 
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { CarouselComponent } from './carousel/carousel.component'
+
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
-    UserCardComponent,
     WaitingroomComponent,
     AvatarComponent,
-    AvatarMenuComponent,
     AdminComponent,
     NotificationComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +57,8 @@ import { NotificationComponent } from './notification/notification.component';
     FlexLayoutModule,
     MatExpansionModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
     MatListModule,
     MatMenuModule,
     MatIconModule,
@@ -67,7 +69,7 @@ import { NotificationComponent } from './notification/notification.component';
     },
     {
         path: '**',
-        component: WaitingroomComponent,
+        component: AdminComponent,
     }
 ], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,

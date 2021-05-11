@@ -1,0 +1,22 @@
+<!-- carousel -->
+<div class="carousel">
+    <ng-container *ngFor="let slide of slides; let i = index">
+        <!-- <img *ngIf="i === currentSlide" [src]="slide.src" class="slide" /> -->
+        <mat-card class="example-card slide" *ngIf="i === currentSlide">
+            <img mat-card-image [src]="slide.src">
+            <mat-card-content class="mt-5">
+                <p class="text-center">
+                   {{slide.text}}
+                </p>
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
+
+    <!-- controls -->
+    <button class="control prev" (click)="onPreviousClick()">
+        <span class="arrow left"></span>
+    </button>
+    <button class="control next" (click)="onNextClick()">
+        <span class="arrow right"></span>
+    </button>
+</div>

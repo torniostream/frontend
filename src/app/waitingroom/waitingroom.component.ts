@@ -16,7 +16,6 @@ import {
 })
 export class WaitingroomComponent implements OnInit, AfterViewInit {
   newRoom: boolean = false;
-  buttonTitle = "Lets go into the jungle";
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -95,12 +94,6 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
   showPlayer() {
     this.enabled = true;
-  }
-
-  CreateNewRoom(){
-    this.newRoom = !this.newRoom;
-    if(this.newRoom) this.buttonTitle = "close admin section";
-    else this.buttonTitle = "Lets go into the jungle";
   }
 
   setPlaying(isPlaying: boolean) {

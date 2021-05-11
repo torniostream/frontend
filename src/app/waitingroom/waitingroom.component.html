@@ -1,5 +1,5 @@
-<app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)" [duration]="duration"
-  (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
+<app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)"
+  [duration]="duration" (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
 
 <div class="container-fluid waitingroom" *ngIf="!enabled">
   <!-- Content wrapper start -->
@@ -17,21 +17,16 @@
                   <li class="person" *ngFor="let user of users">
                     <div class="user">
                       <img [src]="user.avatar.path">
-                      <!-- <span class="status busy"></span> -->
                     </div>
                     <!-- username -->
                     <p class="name-time">
                       <span class="name">{{user.nickname}}</span>
                     </p>
                   </li>
-
                 </ul>
               </div>
             </div>
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
-              <!-- <div class="selected-user">
-                                  <span>To: <span class="name">Emily Russell</span></span>
-                              </div> -->
               <div class="container-fluid p-3 text-center">
                 <h3 class="mt-4">{{greet}}</h3>
                 <h5 class="mt-4 mb-4">Waiting Room</h5>
@@ -51,12 +46,7 @@
                 </div>
                 <div class="example-button-row mt-4 mb-5">
                   <button class="mr-3" mat-raised-button color="primary" (click)="joinRoom()">Join</button>
-                  <button mat-raised-button color="primary" (click)="CreateNewRoom()">{{buttonTitle}}</button>
                   <button mat-raised-button color="primary" (click)="showPlayer()">showplayer</button>
-                  <div *ngIf="newRoom" class="mb-5">
-                    <hr>
-                    <app-admin></app-admin>
-                  </div>
                 </div>
               </div>
             </div>

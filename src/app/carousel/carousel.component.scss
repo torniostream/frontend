@@ -1,0 +1,97 @@
+// =========================
+// Carousel
+// =========================
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+:host {
+    flex: 1;
+  }
+  
+  .carousel {
+    position: relative;
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5em;
+  }
+  .slide {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: auto;
+    object-fit: cover;
+    // zoom effect on hover
+    transition: transform 150ms cubic-bezier(0.25, 0.46, 0.45, 0.84);
+    border-radius: 0.5em;
+    padding: 2rem;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .slide p{
+    font-size: 20px;
+    font-family: 'Oswald', sans-serif;
+
+  }
+  
+  .slide:hover {
+    transform: scale(1.025);
+  }
+  
+  // =========================
+  // Next and Prev buttons
+  // =========================
+  .control {
+    border: 0;
+    background-color: transparent;
+    outline: 0; // remove blue outline border, but make sure they are still focussable for accessibility
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.5em;
+    color:white;
+    font-weight: bold;
+    font-size: 3em;
+    user-select: none;
+    height: 100%;
+    opacity: 80%;
+    // opacity effect on hover
+    transition: opacity 150ms cubic-bezier(0.25, 0.46, 0.45, 0.84);
+  
+    &:hover, &:focus {
+      opacity: 1;
+    }
+  
+    /* Position the buttons */
+    &.next {
+      right: 0;
+    }
+    &.prev {
+      left: 0;
+    }
+  }
+  
+  /* style the arrows */
+  .arrow {
+    display: block;
+    border-left: 0.1em solid #5a5a5a;
+    border-bottom: 0.1em solid #5a5a5a;
+    width: 0.5em;
+    height: 0.5em;
+  
+    &.left {
+      transform: rotate(45deg);
+    }
+    &.right {
+      transform: rotate(225deg);
+    }
+  }
+
+  .arrow:hover{
+    border-left: 0.1em solid #414141;
+    border-bottom: 0.1em solid #414141;
+
+  }
