@@ -3,11 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { User } from '../models/user';
 import { NotificationComponent } from '../../app/notification/notification.component';
+import { map } from 'rxjs/operators';
+import { Notification } from '../models/notification';
+import { UserListComponent } from '../user-list/user-list.component'; 
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { exit } from 'process';
 
 @Component({
   selector: 'app-waitingroom',
@@ -17,8 +21,11 @@ import {
 export class WaitingroomComponent implements OnInit, AfterViewInit {
   newRoom: boolean = false;
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  horizontalPositionNotification: MatSnackBarHorizontalPosition = 'end';
+  verticalPositionNotification: MatSnackBarVerticalPosition = 'top';
+
+  horizontalPositionParticipants: MatSnackBarHorizontalPosition = 'end';
+  verticalPositionParticipants: MatSnackBarVerticalPosition = 'top';
 
   greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
   greet: string;
@@ -26,6 +33,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
   name_group = "Pasta al tornio";
   selected = 'option2';
 
+  notificationQueue = Array<Notification>();
   // Input form bindings
   nickname: string;
   roomUUID: string;
@@ -47,6 +55,12 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
   position: number = 0;
   duration: number = 100;
 
+  times = new Date();
+  millisecond = 3000; //timer
+
+  //PROVA USER LIST\
+  provaUser = [{nickname: "jhonny", avatar:{id: 1, path:"/assets/images/avatar/avatar1.png"},isAdmin: null, isInhibited: null},{nickname: "jhonny", avatar:{id: 1, path:"/assets/images/avatar/avatar1.png"},isAdmin: null, isInhibited: null}];
+
   // Registered user to the lobby (room)
   public users: Array<User> = new Array<User>();
 
@@ -57,21 +71,23 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
     this.api.setVideoElement(this.elementVideoRef);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {                                             //TODO: devo hchiamare manageNotification ogni secondo
+    this.millisecond = this.times.getMilliseconds();
+
     this.greet = this.getGreeting();
 
     this.api.onUserResumed().subscribe((u) => {
-      this.showNotification(u, " has resumed the video.");
+      this.newNotification(u, " has resumed the video.");
       this.play = true;
     });
 
     this.api.onUserPaused().subscribe((u) => {
-      this.showNotification(u, " has paused the video");
+      this.newNotification(u, " has paused the video");
       this.play = false;
     });
 
-    this.api.onUserJoin().subscribe(u => this.showNotification(u," has joined the room!"));
-    this.api.onUserLeave().subscribe(u => this.showNotification(u, " has left the room."));
+    this.api.onUserJoin().subscribe(u => this.newNotification(u, " has joined the room!"));
+    this.api.onUserLeave().subscribe(u => this.newNotification(u, " has left the room."));
 
     this.api.getPosition().subscribe(position => this.position = position);
     this.api.getVideoDuration().subscribe(duration => this.duration = duration);
@@ -87,7 +103,6 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
 
   joinRoom() {
     this.api.registerToRoom(this.roomUUID, this.user);
-
     this.enabled = !this.enabled;
     this.users.push(this.user);
   }
@@ -109,12 +124,38 @@ export class WaitingroomComponent implements OnInit, AfterViewInit {
     this.api.doSeek(newPosition);
   }
 
-  showNotification(user: User, text: string) {
+  newNotification(user: User, text: string) {
+    let notification: Notification = { user: user, message: text }; //creo l'istanza della notifica
+    if (this.notificationQueue.length == 0) {   //se la lista e' vuota fai vedere l'ultima notifica arrivata
+      this.showNotification(notification);
+    }
+    else {
+      this.notificationQueue.push(notification); //aggiungo la notificq alla coda
+    }
+  }
+
+  manageNotification(){
+    if (this.notificationQueue.length > 0) {
+      this.showNotification(this.notificationQueue[0]);
+    }
+    return;
+  }
+
+  showNotification(notification : Notification){
+    this.millisecond = 0;
     this._snackBar.openFromComponent(NotificationComponent, {
-      data: { nickname: user.nickname, path: user.avatar.path, command: text},
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
+      data: notification,
+      horizontalPosition: this.horizontalPositionNotification,
+      verticalPosition: this.verticalPositionNotification,
       duration: 3000,
+    });
+  }
+
+  showParticipants() {                                      //TODO capire come chiamare questa funzione dal player
+    this._snackBar.openFromComponent(UserListComponent, {
+      data:this.provaUser,
+      horizontalPosition: this.horizontalPositionParticipants,
+      verticalPosition: this.verticalPositionParticipants,
     });
   }
 }

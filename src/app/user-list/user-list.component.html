@@ -1,0 +1,18 @@
+<div class="users transparent-snackbar">
+    <div class="person">
+        <div class="user">
+            <img [src]="data.path">
+            <span class="status busy"></span>
+        </div>
+        <!-- username -->
+        <div *ngFor="let user of data">
+            <p class="name-time">
+                <span class="name">{{user.nickname}}</span>
+                <span class="message">{{user.command}}</span>
+                <button mat-mini-fab color="primary" aria-label="Example icon button with a plus one icon">
+                    <mat-icon>mute</mat-icon>
+                  </button>
+            </p>
+        </div>
+    </div>
+</div>

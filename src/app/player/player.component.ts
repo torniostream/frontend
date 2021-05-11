@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
+import { EventEmitterService } from '../event-emitter.service';   
 
 @Component({
   selector: 'app-player',
@@ -20,7 +21,8 @@ import { DOCUMENT } from '@angular/common';
 })
 export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private eventEmitterService: EventEmitterService
   ) { }
 
   @Input() play: boolean;
@@ -30,6 +32,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   @Output() positionChange: EventEmitter<number> = new EventEmitter<number>();
 
   @Input() duration: number;
+
 
   elem: any;
   isFullScreen = false;
@@ -188,5 +191,9 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     }
     this.document.exitFullscreen();
     this.isFullScreen = false;
+  }
+
+  toggleAdmin(){
+    this.eventEmitterService
   }
 }

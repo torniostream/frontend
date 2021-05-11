@@ -11,16 +11,16 @@
  .users-container {
      position: relative;
      padding: 1rem 0;
-     border-right: 1px solid #e6ecf3;
      height: 100%;
      display: -ms-flexbox;
      display: flex;
      -ms-flex-direction: column;
      flex-direction: column;
+     overflow: hidden;
  }
  
  .sfondo{
-    background-image: url("/assets/images/image.jpg");
+    background: transparent;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center; 
@@ -29,6 +29,10 @@
  .waitingroom{
     margin-top: 33vh;
     width: 50vw;
+    background: rgb(255,255,255,0.95);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: none;
+    
 }
 
  .users {
@@ -99,7 +103,7 @@
      -webkit-border-radius: 100px;
      -moz-border-radius: 100px;
      border-radius: 100px;
-     background: #e6ecf3;
+     background: transparent;
      position: absolute;
      top: 0;
      right: 0;
@@ -312,10 +316,9 @@
  }
  .card {
      border: 0;
-     background: #f4f5fb;
+     background: transparent;
      -webkit-border-radius: 2px;
      -moz-border-radius: 2px;
      border-radius: 2px;
      margin-bottom: 2rem;
-     box-shadow: none;
  }

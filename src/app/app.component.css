@@ -1,3 +1,15 @@
 body{
     margin: 0vw;
+    background-color: transparent;
+
+}
+html{
+    width: auto;
+    height: 100vh;
+    background: url('/assets/images/waiting.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: auto;
 }

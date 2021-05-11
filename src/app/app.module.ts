@@ -28,8 +28,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { NotificationComponent } from './notification/notification.component'; 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { CarouselComponent } from './carousel/carousel.component';
-import {ClipboardModule} from '@angular/cdk/clipboard'; 
-
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import { UserListComponent } from './user-list/user-list.component'; 
+import {EventEmitterService} from './event-emitter.service';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +41,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     AdminComponent,
     NotificationComponent,
     CarouselComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,12 +73,12 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     },
     {
         path: '**',
-        component: AdminComponent,
+        component: WaitingroomComponent,
     }
 ], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [EventEmitterService],
   bootstrap: [AppComponent]
 
 
