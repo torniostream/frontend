@@ -38,7 +38,7 @@ export class AdminComponent implements OnInit {
   generateLink() {
     this.api.createRoom(this.filmLink, { nickname: this.admin.nickname, isInhibited: false, isAdmin: true, avatar: this.admin.avatar});
     this.isEditable = !this.isEditable;
-    console.log(this.admin.nickname + this.admin.avatar);
+   // console.log(this.admin.nickname + this.admin.avatar);
   }
 
   setAvatar(avatar) {

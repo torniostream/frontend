@@ -27,8 +27,8 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { NotificationComponent } from './notification/notification.component'; 
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { CarouselComponent } from './carousel/carousel.component'
-
+import { CarouselComponent } from './carousel/carousel.component';
+import {ClipboardModule} from '@angular/cdk/clipboard'; 
 
 @NgModule({
   declarations: [
@@ -44,6 +44,7 @@ import { CarouselComponent } from './carousel/carousel.component'
     BrowserModule,
     MatCardModule,
     CommonModule,
+    ClipboardModule,
     MatInputModule,
     MatStepperModule,
     MatGridListModule,

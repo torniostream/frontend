@@ -54,9 +54,15 @@
                 <mat-step>
                     <ng-template matStepLabel>Generate Shared Link</ng-template>
                     <button mat-button matStepperNext mat-raised-button color="primary" class="mb-3"
-                        (click)="generateLink()">Generate
-                        Link</button>
-                        <input *ngIf="isEditable" matInput type="text" class="mb-3" [(ngModel)]="generatedLink">
+                        (click)="generateLink()">Generate Link</button>
+                    <div *ngIf="isEditable" class="d-flex justify-content-center">
+                        <input matInput type="text" class="mb-3 input" [(ngModel)]="generatedLink">
+                        <button mat-icon-button [cdkCopyToClipboard]="generatedLink">
+                            <mat-icon>
+                                content_copy
+                            </mat-icon>
+                        </button>
+                    </div>
 
                     <div>
                         <button mat-button matStepperPrevious class="mr-2" mat-raised-button>Back</button>
