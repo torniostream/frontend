@@ -12,6 +12,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Observable, Subscription, timer } from 'rxjs';
+import { SharedService } from './../shared.service';
 
 @Component({
   selector: 'app-waitingroom',
@@ -25,7 +26,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   verticalPositionNotification: MatSnackBarVerticalPosition = 'top';
 
   horizontalPositionParticipants: MatSnackBarHorizontalPosition = 'end';
-  verticalPositionParticipants: MatSnackBarVerticalPosition = 'top';
+  verticalPositionParticipants: MatSnackBarVerticalPosition = 'bottom';
 
   greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
   greet: string;
@@ -59,9 +60,12 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   millisecondStart = 0; //timer
   source = timer(1000, 1000);
 
-  //PROVA USER LIST\
-  provaUser = [{ nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatar/avatar1.png" }, isAdmin: null, isInhibited: null }, { nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatar/avatar1.png" }, isAdmin: null, isInhibited: null }];
+  clickEventSubscription:Subscription;
 
+  //PROVA USER LIST
+  provaUser = [{ nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatars/avatar8.png" }, isAdmin: null, isInhibited: true }, { nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatars/avatar1.png" }, isAdmin: null, isInhibited: false }];
+
+  provauser: User;
   // Registered user to the lobby (room)
   public users: User[] = new Array<User>();
 
@@ -70,7 +74,11 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   // We don't want to do that, do we?
   private subscriptions: Subscription[] = new Array<Subscription>();
 
-  constructor(private api: ApiService, private _snackBar: MatSnackBar) {
+  constructor(private api: ApiService, private _snackBar: MatSnackBar,
+    private SharedService: SharedService) {
+
+        this.clickEventSubscription = this.SharedService.getMuteEvent(this.provauser).subscribe(() =>{ this.muteUser(this.provauser);});
+        this.clickEventSubscription = this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
   }
 
   ngAfterViewInit(): void {
@@ -187,8 +195,13 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   showParticipants() {                                      //TODO capire come chiamare questa funzione dal player
     this._snackBar.openFromComponent(UserListComponent, {
       data: this.provaUser,
+      panelClass: ['userlistsnakbar'],
       horizontalPosition: this.horizontalPositionParticipants,
       verticalPosition: this.verticalPositionParticipants,
     });
+  }
+
+  muteUser(user: User) {
+    console.log(user);
   }
 }

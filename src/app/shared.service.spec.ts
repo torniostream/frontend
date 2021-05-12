@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EventEmitterService } from './event-emitter.service';
+import { SharedService } from './shared.service';
 
-describe('EventEmitterService', () => {
-  let service: EventEmitterService;
+describe('SharedService', () => {
+  let service: SharedService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EventEmitterService);
+    service = TestBed.inject(SharedService);
   });
 
   it('should be created', () => {

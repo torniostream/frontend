@@ -12,8 +12,7 @@ import {
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
-import { EventEmitterService } from '../event-emitter.service';
-
+import {SharedService} from './../shared.service';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -21,8 +20,7 @@ import { EventEmitterService } from '../event-emitter.service';
 })
 export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private eventEmitterService: EventEmitterService
+    @Inject(DOCUMENT) private document: Document, private sharedService: SharedService
   ) { }
 
   @Input() play: boolean;
@@ -193,7 +191,8 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.isFullScreen = false;
   }
 
-  toggleAdmin() {
-    this.eventEmitterService
+  toggleAdmin()
+  {
+    this.sharedService.sendAdminEvent();
   }
 }

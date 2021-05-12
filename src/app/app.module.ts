@@ -30,7 +30,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { CarouselComponent } from './carousel/carousel.component';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import { UserListComponent } from './user-list/user-list.component'; 
-import {EventEmitterService} from './event-emitter.service';
  
 @NgModule({
   declarations: [
@@ -78,7 +77,7 @@ import {EventEmitterService} from './event-emitter.service';
 ], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
   ],
-  providers: [EventEmitterService],
+  providers: [],
   bootstrap: [AppComponent]
 
 
