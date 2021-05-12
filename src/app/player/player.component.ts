@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
-import { EventEmitterService } from '../event-emitter.service';   
+import { EventEmitterService } from '../event-emitter.service';
 
 @Component({
   selector: 'app-player',
@@ -115,7 +115,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   onSeek(event) {
     const value = event.value;
     this.positionChange.emit(value);
-    
+
   }
 
   chkScreenMode() {
@@ -193,7 +193,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.isFullScreen = false;
   }
 
-  toggleAdmin(){
+  toggleAdmin() {
     this.eventEmitterService
   }
 }
