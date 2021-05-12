@@ -13,6 +13,8 @@ import {
 
 import { DOCUMENT } from '@angular/common';
 import {SharedService} from './../shared.service';
+import { User } from '../models/user';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',

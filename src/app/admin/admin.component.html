@@ -14,10 +14,11 @@
                         <ng-template matStepLabel>Room name</ng-template>
                         <mat-form-field>
                             <mat-label>Room name</mat-label>
-                            <input matInput formControlName="firstCtrl" required>
+                            <input matInput [(ngModel)] = "roomName" formControlName="firstCtrl" required>
                         </mat-form-field>
                         <div>
                             <button mat-button matStepperNext mat-raised-button color="primary">Next</button>
+                            <button mat-button matStepperNext (click)="getParticipants()" mat-raised-button color="primary">Show participants</button>
                         </div>
                     </form>
                 </mat-step>
@@ -26,7 +27,7 @@
                         <ng-template matStepLabel>Movie Link</ng-template>
                         <mat-form-field>
                             <mat-label>Movie Link</mat-label>
-                            <input matInput formControlName="secondCtrl" required>
+                            <input matInput [(ngModel)] = "movieLink" formControlName="secondCtrl" required>
                         </mat-form-field>
                         <div>
                             <button mat-button matStepperPrevious mat-raised-button class="mr-2">Back</button>
@@ -41,7 +42,7 @@
                             <mat-form-field>
                                 <mat-label>Nickname</mat-label>
                                 <input matInput formControlName="secondCtrl" placeholder="Dott. Polpetta" required
-                                    [(ngModel)]="admin.nickname">
+                                    [(ngModel)]="nickname">
                             </mat-form-field>
                             <app-avatar (newAvatarEvent)="setAvatar($event)" class="mt-3 ml-2"></app-avatar>
                         </div>

@@ -47,6 +47,8 @@ export class ApiService {
   userEventSubject: Subject<UserEvent> = new Subject<UserEvent>();
   uuidSubject: Subject<string> = new Subject<string>();
 
+  participants: Subject<User[]> = new Subject<User[]>();
+
   constructor() {
     this.myWebSocket.subscribe(
       msg => {
@@ -184,6 +186,9 @@ export class ApiService {
     case 'userInhibited':
       this.userEventSubject.next({ event: Event.UserInhibited, user: parsedMessage.user });
       break;
+    case 'responseParticipants':
+      this.participants.next(parsedMessage.users);
+      break;
     default:
       console.log('Unrecognized message', parsedMessage);
     }
@@ -221,6 +226,16 @@ export class ApiService {
 
   getVideoDuration(): Observable<number> {
     return this.duration.asObservable();
+  }
+
+  getParticipants(room: string): Observable<User[]> {
+    const message = {
+      id : 'showParticipants',
+      room,
+    };
+    this.sendMessage(message);
+
+    return this.participants.asObservable();
   }
 
   registerToRoom(roomid: string, user: User) {

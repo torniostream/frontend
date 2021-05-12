@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { User } from '../models/user';
 import { NotificationComponent } from '../../app/notification/notification.component';
@@ -20,6 +20,8 @@ import { SharedService } from './../shared.service';
   styleUrls: ['./waitingroom.component.css']
 })
 export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
+  usersPreview: User[] = new Array<User>();
+
   newRoom: boolean = false;
 
   horizontalPositionNotification: MatSnackBarHorizontalPosition = 'end';
@@ -68,8 +70,11 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   // We don't want to do that, do we?
   private subscriptions: Subscription[] = new Array<Subscription>();
 
+  showAdmin: boolean = true;
+  showWaitingRoom: boolean = true;
+
   constructor(private api: ApiService, private _snackBar: MatSnackBar,
-    private SharedService: SharedService) {
+    private SharedService: SharedService, private _router: Router, private _activatedRoute: ActivatedRoute) {
         // this.clickEventSubscription = this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
   }
 
@@ -78,6 +83,21 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(this._activatedRoute.queryParams.subscribe(params => {
+      this.roomUUID = params.room;
+      this.subscriptions.push(this.api.getParticipants(this.roomUUID).subscribe(users => {
+        this.usersPreview = this.usersPreview.concat(users);
+      }));
+    }));
+
+    // Ugly hack, again :P
+    if (this._router.url.indexOf("player") != -1) {
+      // do not show admin
+      this.showAdmin = false;
+    } else {
+      this.showWaitingRoom = false;
+    }
+
     // Get a new customized greet because we are nice people.
     this.greet = this.getGreeting();
 
@@ -119,8 +139,37 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(this.api.getPosition().subscribe(p => this.position = p));
     this.subscriptions.push(this.api.getVideoDuration().subscribe(d => this.duration = d));
 
-    this.api.onUserJoin().subscribe(u => this.newNotification(u, " has joined the room!"));
-    this.api.onUserLeave().subscribe(u => this.newNotification(u, " has left the room."));
+    this.subscriptions.push(this.api.onUserNewAdmin().subscribe(a => {
+      const previousAdmin = this.users.find(previousAdmin => previousAdmin.isAdmin === true);
+
+      // The previous admin can possibly already left the room 
+      if (previousAdmin) {
+        previousAdmin.isAdmin = false;
+      }
+
+      const newAdmin = this.users.find(u => a.nickname === u.nickname);
+      newAdmin.isAdmin = true;
+
+      this.showNotification({user: newAdmin, message: " is now an admin of the room"});
+    }));
+
+    this.subscriptions.push(this.api.onUserUninhibit().subscribe(user => {
+      const userNoLongerInhibited = this.users.find(u => u.nickname === user.nickname);
+      userNoLongerInhibited.isInhibited = false;
+
+      this.showNotification({ user: userNoLongerInhibited, message: " is no longer inhibited." });
+    }));
+
+    this.subscriptions.push(this.api.onUserInhibit().subscribe(user => {
+      const userInhibited = this.users.find(u => u.nickname === user.nickname);
+      userInhibited.isInhibited = true;
+
+      this.showNotification({ user: userInhibited, message: " is now inhibited and cannot pauses." });
+    }));
+
+    this.subscriptions.push(this.api.onUserSeek().subscribe(user => {
+      this.showNotification({ user, message: " has sought the video." });
+    }));
   }
 
   ngOnDestroy() {
@@ -140,6 +189,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.api.registerToRoom(this.roomUUID, this.user);
     this.enabled = !this.enabled;
     this.users.push(this.user);
+    this.showPlayer();
   }
 
   showPlayer() {
