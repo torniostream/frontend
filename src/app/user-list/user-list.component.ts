@@ -8,6 +8,7 @@ import {
   MatSnackBarVerticalPosition,
   MAT_SNACK_BAR_DATA,
 } from '@angular/material/snack-bar';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-user-list',
@@ -19,15 +20,15 @@ export class UserListComponent implements OnInit {
 
 @Output() disableChange = new EventEmitter<User>();
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any,
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: User[],
     public snackBar: MatSnackBar, private sharedService: SharedService) {
   }
 
   ngOnInit(): void {
   }
 
-  toggleMute(userId): void{
-   this.sharedService.sendMuteEvent(userId);
+  toggleMute(change:  MatSlideToggleChange, user: User): void{
+    change.checked ? this.sharedService.sendMuteEvent(user) : this.sharedService.sendUnMuteEvent(user);
   }
 
   close(){

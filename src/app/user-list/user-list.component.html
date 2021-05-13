@@ -17,7 +17,7 @@
                 <div class="float-right">
 
                     <mat-slide-toggle class="example-margin" color="Accent" [checked]="user.isInhibited"
-                        (change)="toggleMute(user.nickname)">
+                        (change)="toggleMute($event, user)">
                     </mat-slide-toggle>
                 </div>
             </div>

@@ -289,6 +289,22 @@ export class ApiService {
     });
   }
 
+  inhibitUser(user: User) {
+    const message = {
+      id: 'inhibit',
+      target: user.nickname
+    };
+    this.sendMessage(message);
+  }
+
+  uninhibitUser(user: User) {
+    const message = {
+      id: 'uninhibit',
+      target: user.nickname
+    }
+    this.sendMessage(message);
+  }
+
   createRoom(videourl: string, user: User) {
     if (!this.videoElem) {
       console.error("You need to initialize the video element before trying to access this function.");

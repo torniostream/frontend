@@ -32,7 +32,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   @Output() positionChange: EventEmitter<number> = new EventEmitter<number>();
 
   @Input() duration: number;
-
+  @Input() admin: boolean = false;
 
   elem: any;
   isFullScreen = false;

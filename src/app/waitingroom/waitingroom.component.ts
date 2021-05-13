@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { User } from '../models/user';
 import { NotificationComponent } from '../../app/notification/notification.component';
-import { map } from 'rxjs/operators';
+import { ErrorComponent } from '../error/error.component';
 import { Notification } from '../models/notification';
 import { UserListComponent } from '../user-list/user-list.component';
 import {
@@ -11,7 +11,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { SharedService } from './../shared.service';
 
 @Component({
@@ -82,6 +82,22 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.api.setVideoElement(this.elementVideoRef);
   }
 
+  getMyUser(): User {
+    var candidates = this.users.filter((u) => u.nickname === this.user.nickname);
+    if (candidates.length != 0) {
+      return candidates[0];
+    }
+    return null;
+  }
+
+  amIAdmin(): boolean {
+    var candidates = this.users.filter((u) => u.nickname === this.user.nickname);
+    if (candidates.length != 0) {
+      return candidates[0].isAdmin;
+    }
+    return false;
+  }
+
   ngOnInit(): void {
     // Ugly hack, again :P
     if (this._router.url.indexOf("player") != -1) {
@@ -104,9 +120,15 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.millisecondStart = this.times.getMilliseconds();
     this.source.subscribe(time => this.manageNotification());
 
-    this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
+    this.subscriptions.push(this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();}))
 
-    this.SharedService.getMuteEvent().subscribe((u) => {this.muteUser(u)});
+    this.subscriptions.push(this.SharedService.getMuteEvent().subscribe((u) => {
+      this.api.inhibitUser(u);
+    }));
+
+    this.subscriptions.push(this.SharedService.getUnMuteEvent().subscribe((u) => {
+      this.api.uninhibitUser(u);
+    }));
 
     this.subscriptions.push(this.api.onUserResumed().subscribe((u) => {
       this.newNotification(u, " has resumed the video.");
@@ -201,6 +223,12 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setPlaying(isPlaying: boolean) {
+    if (this.getMyUser() && this.getMyUser().isInhibited == true) {
+      this.play = !isPlaying;
+      this.showError("You're inhibited. You can't do that.")
+      return;
+    }
+
     isPlaying ? this.api.resume() : this.api.pause();
     this.play = isPlaying;
   }
@@ -210,6 +238,11 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setPosition(newPosition: number) {
+    if (this.getMyUser() && this.getMyUser().isInhibited == true) {
+      this.showError("You're inhibited. You can't do that.")
+      return;
+    }
+
     this.api.doSeek(newPosition);
   }
 
@@ -244,25 +277,16 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showParticipants() {                                     
     this._snackBar.openFromComponent(UserListComponent, {
-      data: this.users,
+      data: this.users.filter((u) => u.nickname != this.user.nickname),
       panelClass: ['userlistsnakbar'],
       horizontalPosition: this.horizontalPositionParticipants,
       verticalPosition: this.verticalPositionParticipants,
     });
   }
 
-  muteUser(userNickname: String) {
-    this.users.forEach(element => {
-      if(element.nickname == userNickname){
-        element.isInhibited = !element.isInhibited;
-      }
-    });
-    
-  }
-
   showError(text: string) {
-    this._snackBar.openFromComponent(NotificationComponent, {
-      data: { nickname: "error", path: null, command: text },
+    this._snackBar.openFromComponent(ErrorComponent, {
+      data: { message: text },
       horizontalPosition: this.horizontalPositionNotification,
       verticalPosition: this.verticalPositionNotification,
       duration: 3000,

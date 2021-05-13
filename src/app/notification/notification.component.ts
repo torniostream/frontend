@@ -5,6 +5,7 @@ import {
   MatSnackBarVerticalPosition,
   MAT_SNACK_BAR_DATA,
 } from '@angular/material/snack-bar';
+import { Notification } from '../models/notification';
 
 @Component({
   selector: 'app-notification',
@@ -13,7 +14,7 @@ import {
 })
 export class NotificationComponent implements OnInit {
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any,
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: Notification,
     public snackBar: MatSnackBar) {
   }
 

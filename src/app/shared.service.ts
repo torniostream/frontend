@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { User } from './models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -7,14 +8,23 @@ import { Observable, Subject } from 'rxjs';
 
 export class SharedService {
     private subject = new Subject<any>();
-    private subjectuser = new Subject<any>(); 
+    private userMute = new Subject<User>();
+    private userUnMute = new Subject<User>();
     
-    sendMuteEvent(userNickname: String) {
-      this.subjectuser.next(userNickname);
-    } 
+    sendMuteEvent(user: User) {
+      this.userMute.next(user);
+    }
+
+    sendUnMuteEvent(user: User) {
+      this.userUnMute.next(user);
+    }
     
-    getMuteEvent(): Observable<any> {
-      return this.subjectuser.asObservable();
+    getMuteEvent(): Observable<User> {
+      return this.userMute.asObservable();
+    }
+
+    getUnMuteEvent(): Observable<User> {
+      return this.userUnMute.asObservable();
     }
 
     openAdminPanel(): Observable<any> {

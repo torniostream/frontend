@@ -1,5 +1,5 @@
 <app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)" 
-  [duration]="duration" (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'" (toggleMute)="muteUser($event)"></app-player>
+  [duration]="duration" [admin]="amIAdmin()" (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
 
 <app-admin [style.display]="showAdmin ? 'block' : 'none'"></app-admin>
 <div class="container-fluid waitingroom" *ngIf="!enabled" [style.display]="showWaitingRoom ? 'block' : 'none'">

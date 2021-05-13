@@ -7,13 +7,14 @@
     width: 100%;
     padding: 10px 1rem;
     cursor: pointer;
+    border-bottom: 1px solid #f0f4f8;
 }
 
 .users .person:last-child {
     border-bottom: 0;
 }
 
-.user {
+.users .person .user {
     display: inline-block;
     position: relative;
     margin-right: 10px;
@@ -38,6 +39,11 @@
     font-size: .85rem;
     margin-right: 1vW;
 }
+.users .person p .name-time .message{
+    font-weight: 800;
+    font-size: 10rem;
+    color: yellow;
+}
 
 @media (max-width: 767px) {
     .users .person .user img {
@@ -53,20 +59,5 @@
 }
 
 .transparent-snackbar{
-    /* background: transparent;*/
-  }
-
-.example-h2 {
-    margin: 10px;
-  }
-  
-  .example-section {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    height: 60px;
-  }
-  
-  .example-margin {
-    margin: 10px;
+    background: transparent;
   }
