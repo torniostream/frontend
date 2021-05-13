@@ -83,15 +83,15 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this._activatedRoute.queryParams.subscribe(params => {
-      this.roomUUID = params.room;
-      this.subscriptions.push(this.api.getParticipants(this.roomUUID).subscribe(users => {
-        this.usersPreview = this.usersPreview.concat(users);
-      }));
-    }));
-
     // Ugly hack, again :P
     if (this._router.url.indexOf("player") != -1) {
+      this.subscriptions.push(this._activatedRoute.queryParams.subscribe(params => {
+        this.roomUUID = params.room;
+        this.subscriptions.push(this.api.getParticipants(this.roomUUID).subscribe(users => {
+          this.usersPreview = this.usersPreview.concat(users);
+        }));
+      }));
+      
       // do not show admin
       this.showAdmin = false;
     } else {
