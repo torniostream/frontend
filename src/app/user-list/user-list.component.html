@@ -1,17 +1,25 @@
-<div class="users-container text-center">
+<div class="mb-5 h-100">
+    <button mat-icon-button class="float-right" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="users-container text-center mt-5">
     <ul class="users">
         <div class="person" *ngFor="let user of data">
-            <div class="user">
-                <img [src]="user.avatar.path">
-            </div>
-            <!-- username -->
-            <p class="name-time">
-                <span class="name">{{user.nickname}}</span>
-            </p>
-            <div class="float-right">
+            <div *ngIf="!user.isAdmin">
+                <div class="user">
+                    <img [src]="user.avatar.path">
+                </div>
+                <!-- username -->
+                <p class="name-time">
+                    <span class="name">{{user.nickname}}</span>
+                </p>
+                <div class="float-right">
 
-                <mat-slide-toggle class="example-margin" color="Accent" [checked]="user.isInhibited" (change)="toggleMute(user)">
-                </mat-slide-toggle>
+                    <mat-slide-toggle class="example-margin" color="Accent" [checked]="user.isInhibited"
+                        (change)="toggleMute(user.nickname)">
+                    </mat-slide-toggle>
+                </div>
             </div>
         </div>
     </ul>

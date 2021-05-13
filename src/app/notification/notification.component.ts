@@ -18,9 +18,6 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // setTimeout(() => {
-    //   this.snackBar.dismiss();
-    // }, 3000)
   }
 
 }

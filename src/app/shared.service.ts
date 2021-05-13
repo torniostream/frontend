@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import {User} from './models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class SharedService {
-    private subject = new Subject<any>(); 
+    private subject = new Subject<any>();
+    private subjectuser = new Subject<any>(); 
     
-    sendMuteEvent(user: User) {
-      this.subject.next(user);
+    sendMuteEvent(userNickname: String) {
+      this.subjectuser.next(userNickname);
     } 
     
-    getMuteEvent(user: User): Observable<any> {
-      return this.subject.asObservable();
+    getMuteEvent(): Observable<any> {
+      return this.subjectuser.asObservable();
     }
 
     openAdminPanel(): Observable<any> {

@@ -56,16 +56,10 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   position: number = 0;
   duration: number = 100;
 
-  times = new Date();
-  millisecondStart = 0; //timer
+  times = new Date();  //notificcation timer
+  millisecondStart = 0; 
   source = timer(1000, 1000);
 
-  clickEventSubscription:Subscription;
-
-  //PROVA USER LIST
-  provaUser = [{ nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatars/avatar8.png" }, isAdmin: null, isInhibited: true }, { nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatars/avatar1.png" }, isAdmin: null, isInhibited: false }];
-
-  provauser: User;
   // Registered user to the lobby (room)
   public users: User[] = new Array<User>();
 
@@ -76,9 +70,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private api: ApiService, private _snackBar: MatSnackBar,
     private SharedService: SharedService) {
-
-        this.clickEventSubscription = this.SharedService.getMuteEvent(this.provauser).subscribe(() =>{ this.muteUser(this.provauser);});
-        this.clickEventSubscription = this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
+        // this.clickEventSubscription = this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
   }
 
   ngAfterViewInit(): void {
@@ -90,7 +82,11 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.greet = this.getGreeting();
 
     this.millisecondStart = this.times.getMilliseconds();
-    this.source.subscribe(d => this.manageNotification());
+    this.source.subscribe(time => this.manageNotification());
+
+    this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
+
+    this.SharedService.getMuteEvent().subscribe((u) => {this.muteUser(u)});
 
     this.subscriptions.push(this.api.onUserResumed().subscribe((u) => {
       this.newNotification(u, " has resumed the video.");
@@ -192,16 +188,21 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
       this.notificationQueue.shift(); //rimuovo la prima notifica della coda
   }
 
-  showParticipants() {                                      //TODO capire come chiamare questa funzione dal player
+  showParticipants() {                                     
     this._snackBar.openFromComponent(UserListComponent, {
-      data: this.provaUser,
+      data: this.users,
       panelClass: ['userlistsnakbar'],
       horizontalPosition: this.horizontalPositionParticipants,
       verticalPosition: this.verticalPositionParticipants,
     });
   }
 
-  muteUser(user: User) {
-    console.log(user);
+  muteUser(userNickname: String) {
+    this.users.forEach(element => {
+      if(element.nickname == userNickname){
+        element.isInhibited = !element.isInhibited;
+      }
+    });
+    
   }
 }

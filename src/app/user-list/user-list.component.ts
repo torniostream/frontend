@@ -9,7 +9,6 @@ import {
   MAT_SNACK_BAR_DATA,
 } from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -27,9 +26,11 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleMute(user: User): void{
-  
-   let prova:User = {nickname: "jhonny", avatar: { id: 1, path: "/assets/images/avatars/avatar8.png" }, isAdmin: null, isInhibited: true}
-   this.sharedService.sendMuteEvent(prova);
+  toggleMute(userId): void{
+   this.sharedService.sendMuteEvent(userId);
+  }
+
+  close(){
+    this.snackBar.dismiss();
   }
 }
