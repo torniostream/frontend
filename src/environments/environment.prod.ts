@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiurl: 'wss://stream.shii.it/wss/player',
+  baseURL: 'https://tornio.stream',
+  apiurl: 'wss://tornio.stream/wss/player',
 };

@@ -263,8 +263,8 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   showError(text: string) {
     this._snackBar.openFromComponent(NotificationComponent, {
       data: { nickname: "error", path: null, command: text },
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
+      horizontalPosition: this.horizontalPositionNotification,
+      verticalPosition: this.verticalPositionNotification,
       duration: 3000,
     });
   }
