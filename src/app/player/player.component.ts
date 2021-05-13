@@ -79,7 +79,6 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
 
-    this.durationTot = this.formatTime(this.duration);
     this.chkScreenMode();
     this.elem = document.documentElement;
     this.video.emit(this.divView);
@@ -204,9 +203,5 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   toggleAdmin() {
     this.sharedService.sendAdminEvent();
   }
-  
-  private formatTime(duration): string {
-    var result = Math.floor(duration/(1000*60*60)) + ":" + Math.floor(duration/(1000*60))%60 + ":" + Math.floor(duration/1000)%60;
-    return result;
-  }
+
 }
