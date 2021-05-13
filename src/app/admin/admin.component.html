@@ -4,7 +4,7 @@
     </mat-toolbar>
 </p>
 
-<mat-grid-list cols="2" rowHeight="1.5:1">
+<mat-grid-list cols="2" rowHeight="1:1">
     <mat-grid-tile>
         <div class="adminPage">
             <!-- admin Form -->
@@ -66,6 +66,7 @@
 
                     <div>
                         <button mat-button matStepperPrevious class="mr-2" mat-raised-button>Back</button>
+                        <button mat-button matStepperPrevious class="mr-2" mat-raised-button color="primary" (click)="hideAdminPage()">To room</button>
                     </div>
                 </mat-step>
             </mat-vertical-stepper>

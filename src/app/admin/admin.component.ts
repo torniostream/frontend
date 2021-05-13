@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../services/api.service';
 import {FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -24,10 +24,12 @@ export class AdminComponent implements OnInit {
   isEditable = false;
   admin: User = { nickname: null, avatar: null, isAdmin: null, isInhibited: null };
 
+  @Output() changePageEvent = new EventEmitter<any>();
+
   constructor(private api: ApiService,private _formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.api.getUUID().subscribe(uuid => this.generatedLink = environment.baseURL.toString() + "/player?room=" + uuid.toString());
+    this.api.getUUID().subscribe(uuid => this.generatedLink = environment.baseURL.toString() + "/player?room=" + uuid.toString() + "&name=" + this.roomName);
 
     //--form --
     this.firstFormGroup = this._formBuilder.group({
@@ -39,13 +41,15 @@ export class AdminComponent implements OnInit {
   }
 
   generateLink() {
-    console.log(this.movieLink);
-    console.log(this.nickname);
     this.api.createRoom(this.movieLink, { nickname: this.nickname, isInhibited: false, isAdmin: true, avatar: this.admin.avatar});
     this.isEditable = !this.isEditable;
   }
 
   setAvatar(avatar) {
     this.admin.avatar = avatar;
+  }
+
+  hideAdminPage(){
+    this.changePageEvent.emit();
   }
 }

@@ -56,7 +56,7 @@
 
           <div class="right-controls">
             
-            <button data-title="Admin" class="pip-button" *ngIf="admin" (click)="toggleAdmin()">
+            <button data-title="Admin" class="pip-button" (click)="toggleAdmin()" *ngIf="admin">
             <svg>
               <use href="#admin"></use>
             </svg>

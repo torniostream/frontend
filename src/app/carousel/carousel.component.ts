@@ -10,9 +10,9 @@ export class CarouselComponent implements OnInit {
 
   slides = [
     { src: "/assets/images/selection.svg", text: "Choose the movie to watch tonight with friends" },
-    { src: "/assets/images/form.svg", text: "Fill in all fields in the form" },
-    { src: "/assets/images/movie_night.svg", text: "Enjoy a movie with friends" },
-    { src: "/assets/images/share_link.svg", text: "Send the link to your friends so they can access the room" }
+    { src: "/assets/images/form.svg", text: "Fill in all fields in the form and insert movie link" },
+    { src: "/assets/images/share_link.svg", text: "Send the link to your friends so they can access the room" },
+    { src: "/assets/images/movie_night.svg", text: "Enjoy a movie with friends" }
   ];
   currentSlide = 0;
   source = interval(3000);

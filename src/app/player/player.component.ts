@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
-import {SharedService} from './../shared.service';
+import { SharedService } from './../shared.service';
 import { User } from '../models/user';
 
 @Component({
@@ -32,7 +32,9 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   @Output() positionChange: EventEmitter<number> = new EventEmitter<number>();
 
   @Input() duration: number;
-  @Input() admin: boolean = false;
+  @Input() admin: boolean;
+  @Input() enabled: boolean;
+
 
   elem: any;
   isFullScreen = false;
@@ -79,6 +81,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.chkScreenMode();
     this.elem = document.documentElement;
     this.video.emit(this.divView);
+    console.log(this.admin);
   }
 
   ngAfterViewChecked(): void {
@@ -140,17 +143,21 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   }
 
   @HostListener('document:keyup', ['$event'])
+
   handleKeyboardEvent(event: KeyboardEvent) {
-    switch (event.key) {
-      case 'm':
-        this.toggleMute();
-        break;
-      case ' ':
-        this.togglePlaying();
-        break;
-      case 'f':
-        this.toggleFullscreen();
+    if (this.enabled) {
+      switch (event.key) {
+        case 'm':
+          this.toggleMute();
+          break;
+        case ' ':
+          this.togglePlaying();
+          break;
+        case 'f':
+          this.toggleFullscreen();
+      }
     }
+
   }
 
   togglePlaying() {
@@ -193,8 +200,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
     this.isFullScreen = false;
   }
 
-  toggleAdmin()
-  {
+  toggleAdmin() {
     this.sharedService.sendAdminEvent();
   }
 }

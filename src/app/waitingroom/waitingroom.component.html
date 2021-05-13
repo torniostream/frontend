@@ -1,7 +1,7 @@
-<app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)" 
+<app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)"  [enabled]="enabled" 
   [duration]="duration" [admin]="amIAdmin()" (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
 
-<app-admin [style.display]="showAdmin ? 'block' : 'none'"></app-admin>
+<app-admin [style.display]="showAdmin ? 'block' : 'none'" (changePageEvent)="toggleAdminPage()"></app-admin>
 <div class="container-fluid waitingroom" *ngIf="!enabled" [style.display]="showWaitingRoom ? 'block' : 'none'">
   <!-- Content wrapper start -->
   <div class="content-wrapper">
@@ -30,7 +30,8 @@
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
               <div class="container-fluid p-3 text-center">
                 <h3 class="mt-4">{{greet}}</h3>
-                <h5 class="mt-4 mb-4">Waiting Room, you're entering into room {{ roomUUID }} </h5>
+                <h5 class="mt-4 mb-4">Waiting Room, you're entering into room </h5>
+                <h5>{{ roomName }} </h5>
 
                 <div class="d-flex justify-content-center">
                   <mat-form-field appearance="legacy" class="mr-5">

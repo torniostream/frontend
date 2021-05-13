@@ -13,6 +13,7 @@ import {
 } from '@angular/material/snack-bar';
 import { Subscription, timer } from 'rxjs';
 import { SharedService } from './../shared.service';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-waitingroom',
@@ -40,6 +41,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   // Input form bindings
   nickname: string;
   roomUUID: string;
+  roomName: string;
 
   user: User = { nickname: null, avatar: null, isAdmin: null, isInhibited: null };
 
@@ -103,6 +105,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this._router.url.indexOf("player") != -1) {
       this.subscriptions.push(this._activatedRoute.queryParams.subscribe(params => {
         this.roomUUID = params.room;
+        this.roomName = params.name;
         this.subscriptions.push(this.api.getParticipants(this.roomUUID).subscribe(users => {
           this.usersPreview = this.usersPreview.concat(users);
         }));
@@ -257,6 +260,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   manageNotification() {
+    console.log((this.times.getMilliseconds() - this.millisecondStart));
     if ((this.notificationQueue.length > 0) && ((this.times.getMilliseconds() - this.millisecondStart) >= 3000)) {
       this.showNotification(this.notificationQueue[0]);
     }
@@ -291,5 +295,10 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
       verticalPosition: this.verticalPositionNotification,
       duration: 3000,
     });
+  }
+
+  toggleAdminPage(){
+    this.showAdmin = false;
+    this.enabled = true;
   }
 }
