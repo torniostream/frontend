@@ -59,6 +59,9 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   // Media metadata
   position: number = 0;
   duration: number = 100;
+  
+  timeLeft: string ="00:00:00";
+  durationTot: string="00:00:00";
 
   times = new Date();  //notificcation timer
   millisecondStart = 0; 
@@ -162,7 +165,9 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     }));
 
     this.subscriptions.push(this.api.getPosition().subscribe(p => this.position = p));
+    this.subscriptions.push(this.api.getPosition().subscribe(p => this.timeLeft = this.formatTime(p)));
     this.subscriptions.push(this.api.getVideoDuration().subscribe(d => this.duration = d));
+    this.subscriptions.push(this.api.getVideoDuration().subscribe(d => this.durationTot =this.formatTime(d)));
 
     this.subscriptions.push(this.api.onUserNewAdmin().subscribe(a => {
       const previousAdmin = this.users.find(previousAdmin => previousAdmin.isAdmin === true);
@@ -300,5 +305,10 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleAdminPage(){
     this.showAdmin = false;
     this.enabled = true;
+  }
+
+  private formatTime(duration): string {
+    var result = Math.floor(duration/(1000*60*60)) + ":" + Math.floor(duration/(1000*60))%60 + ":" + Math.floor(duration/1000)%60;
+    return result;
   }
 }
