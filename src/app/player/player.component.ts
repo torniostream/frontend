@@ -13,7 +13,6 @@ import {
 
 import { DOCUMENT } from '@angular/common';
 import { SharedService } from './../shared.service';
-import { User } from '../models/user';
 
 @Component({
   selector: 'app-player',
@@ -37,6 +36,9 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
 
   @Input() timeLeft:string = '00:00';
   @Input() durationTot:string = '00:00:00';
+  @Input() nickname: string;
+
+  @Input() adminNickname:string;
 
   elem: any;
   isFullScreen = false;
@@ -78,7 +80,6 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
-
     this.chkScreenMode();
     this.elem = document.documentElement;
     this.video.emit(this.divView);
@@ -201,7 +202,10 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   }
 
   toggleAdmin() {
-    this.sharedService.sendAdminEvent();
+    if(this.nickname == null)
+      this.sharedService.sendAdminEvent(this.adminNickname);
+    else
+      this.sharedService.sendAdminEvent(this.nickname);
   }
 
 }

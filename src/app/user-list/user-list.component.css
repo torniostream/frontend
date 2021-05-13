@@ -70,3 +70,18 @@
   .example-margin {
     margin: 10px;
   }
+
+  .close {
+    float:right;
+    display:inline-block;
+    padding:2px 5px;
+    background:transparent;
+}
+
+.close:hover {
+    float:right;
+    display:inline-block;
+    padding:2px 5px;
+    background:#ccc;
+    color:#fff;
+}

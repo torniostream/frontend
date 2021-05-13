@@ -27,11 +27,11 @@ export class SharedService {
       return this.userUnMute.asObservable();
     }
 
-    openAdminPanel(): Observable<any> {
+    openAdminPanel(): Observable<string> {
       return this.subject.asObservable();
     }
 
-    sendAdminEvent() {
-      this.subject.next();
+    sendAdminEvent(nickname: string) {
+      this.subject.next(nickname);
     }
 }

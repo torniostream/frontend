@@ -1,9 +1,10 @@
-<div class="mb-5 h-100">
+<div class="close">
     <button mat-icon-button class="float-right" (click)="close()">
         <mat-icon>close</mat-icon>
     </button>
 </div>
-<div class="users-container text-center mt-5">
+<br>
+<div class="users-container text-center mt-3">
     <ul class="users">
         <div class="person" *ngFor="let user of data">
             <div *ngIf="!user.isAdmin">

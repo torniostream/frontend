@@ -25,6 +25,7 @@ export class AdminComponent implements OnInit {
   admin: User = { nickname: null, avatar: null, isAdmin: null, isInhibited: null };
 
   @Output() changePageEvent = new EventEmitter<any>();
+  @Output() nicknameEvent = new EventEmitter<string>();
 
   constructor(private api: ApiService,private _formBuilder: FormBuilder) { }
 
@@ -51,5 +52,11 @@ export class AdminComponent implements OnInit {
 
   hideAdminPage(){
     this.changePageEvent.emit();
+  }
+
+  sendNickname(){
+    console.log(this.nickname);
+    this.nicknameEvent.emit(this.nickname);
+
   }
 }

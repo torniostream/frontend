@@ -14,6 +14,7 @@ import {
 import { Subscription, timer } from 'rxjs';
 import { SharedService } from './../shared.service';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { exit } from 'process';
 
 @Component({
   selector: 'app-waitingroom',
@@ -21,6 +22,7 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
   styleUrls: ['./waitingroom.component.css']
 })
 export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
+ 
   usersPreview: User[] = new Array<User>();
 
   newRoom: boolean = false;
@@ -40,6 +42,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   notificationQueue = Array<Notification>();
   // Input form bindings
   nickname: string;
+
   roomUUID: string;
   roomName: string;
 
@@ -78,9 +81,10 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   showAdmin: boolean = true;
   showWaitingRoom: boolean = true;
 
+  @Input() adminNickname:string;
+
   constructor(private api: ApiService, private _snackBar: MatSnackBar,
     private SharedService: SharedService, private _router: Router, private _activatedRoute: ActivatedRoute) {
-        // this.clickEventSubscription = this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();})
   }
 
   ngAfterViewInit(): void {
@@ -126,7 +130,7 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.millisecondStart = this.times.getMilliseconds();
     this.source.subscribe(time => this.manageNotification());
 
-    this.subscriptions.push(this.SharedService.openAdminPanel().subscribe(() =>{ this.showParticipants();}))
+    this.subscriptions.push(this.SharedService.openAdminPanel().subscribe((nickname) =>{ this.showParticipants(nickname);}))
 
     this.subscriptions.push(this.SharedService.getMuteEvent().subscribe((u) => {
       this.api.inhibitUser(u);
@@ -265,7 +269,6 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   manageNotification() {
-    console.log((this.times.getMilliseconds() - this.millisecondStart));
     if ((this.notificationQueue.length > 0) && ((this.times.getMilliseconds() - this.millisecondStart) >= 3000)) {
       this.showNotification(this.notificationQueue[0]);
     }
@@ -284,13 +287,16 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
       this.notificationQueue.shift(); //rimuovo la prima notifica della coda
   }
 
-  showParticipants() {                                     
-    this._snackBar.openFromComponent(UserListComponent, {
-      data: this.users.filter((u) => u.nickname != this.user.nickname),
-      panelClass: ['userlistsnakbar'],
-      horizontalPosition: this.horizontalPositionParticipants,
-      verticalPosition: this.verticalPositionParticipants,
-    });
+  showParticipants(nickname) {    
+        if(nickname == this.adminNickname)          //se il nickname che torna e' uguale a quello dell'admin allora apri la scheramta
+        {
+          this._snackBar.openFromComponent(UserListComponent, {
+            data: this.users.filter((u) => u.nickname != this.user.nickname),
+            panelClass: ['userlistsnakbar'],
+            horizontalPosition: this.horizontalPositionParticipants,
+            verticalPosition: this.verticalPositionParticipants,
+          });
+        }
   }
 
   showError(text: string) {
@@ -304,11 +310,15 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleAdminPage(){
     this.showAdmin = false;
-    this.enabled = true;
+    this.showPlayer();
   }
 
   private formatTime(duration): string {
     var result = Math.floor(duration/(1000*60*60)) + ":" + Math.floor(duration/(1000*60))%60 + ":" + Math.floor(duration/1000)%60;
     return result;
+  }
+
+  getAdminNickname(nickname: string){
+    this.adminNickname = nickname;
   }
 }
