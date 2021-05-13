@@ -35,6 +35,8 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   @Input() admin: boolean;
   @Input() enabled: boolean;
 
+  @Input() timeLeft:string = '00:00';
+  @Input() durationTot:string = '00:00:00';
 
   elem: any;
   isFullScreen = false;
@@ -47,9 +49,7 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   audioon = false;
   audiolow = false;
 
-  timeLeft = '00:00';
-  durationTot = '00:00';
-
+ 
   title = 'Banning and friends';
   subtitle = 'Io sono leggenda';
 
@@ -78,10 +78,10 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+
     this.chkScreenMode();
     this.elem = document.documentElement;
     this.video.emit(this.divView);
-    console.log(this.admin);
   }
 
   ngAfterViewChecked(): void {
@@ -203,4 +203,5 @@ export class PlayerComponent implements OnInit, AfterViewChecked {
   toggleAdmin() {
     this.sharedService.sendAdminEvent();
   }
+
 }
