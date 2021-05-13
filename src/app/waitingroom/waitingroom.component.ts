@@ -170,6 +170,10 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(this.api.onUserSeek().subscribe(user => {
       this.showNotification({ user, message: " has sought the video." });
     }));
+
+    this.subscriptions.push(this.api.onBackendError().subscribe(err => {
+      this.showError(err.message);
+    }));
   }
 
   ngOnDestroy() {
@@ -254,5 +258,14 @@ export class WaitingroomComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     
+  }
+
+  showError(text: string) {
+    this._snackBar.openFromComponent(NotificationComponent, {
+      data: { nickname: "error", path: null, command: text },
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 3000,
+    });
   }
 }

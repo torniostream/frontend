@@ -1,6 +1,6 @@
 <div class="users transparent-snackbar">
     <div class="person">
-        <div class="user">
+        <div class="user" *ngIf="data.path">
             <img [src]="data.path">
             <span class="status busy"></span>
         </div>
