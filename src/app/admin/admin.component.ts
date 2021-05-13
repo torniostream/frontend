@@ -26,11 +26,6 @@ export class AdminComponent implements OnInit {
 
   constructor(private api: ApiService,private _formBuilder: FormBuilder) { }
 
-  getParticipants() {
-    this.api.getParticipants(this.roomName).subscribe(users => console.log(users));
-  }
-
-
   ngOnInit(): void {
     this.api.getUUID().subscribe(uuid => this.generatedLink = environment.baseURL.toString() + "/player?room=" + uuid.toString());
 
