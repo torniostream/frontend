@@ -1,0 +1,27 @@
+.adminPage{
+    display: block;
+    height: 750px;
+    width: 750px;
+    padding: 2em;
+    text-align: center;
+    transform: scale(1.05);
+}
+
+.container-carousel{
+    display: block;
+    height: 750px;
+    width: 750px;
+    padding: 2em;
+  }
+
+.mat-stepper-vertical {
+    margin-top: 2vh;
+  }
+  
+  .mat-form-field {
+    margin-top: 16px;
+  }
+
+.input{
+        width: 50px;
+      }

@@ -1,1 +1,56 @@
-<p>waitingroom works!</p>
+<app-player (playChange)="setPlaying($event)" [play]="play" [position]="position" (positionChange)="setPosition($event)" 
+  [duration]="duration" [admin]="amIAdmin()" (video)="addVideo($event)" [style.display]="enabled ? 'block' : 'none'"></app-player>
+
+<app-admin [style.display]="showAdmin ? 'block' : 'none'"></app-admin>
+<div class="container-fluid waitingroom" *ngIf="!enabled" [style.display]="showWaitingRoom ? 'block' : 'none'">
+  <!-- Content wrapper start -->
+  <div class="content-wrapper">
+
+    <!-- Row start -->
+    <div class="row gutters">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card m-0">
+          <!-- Row start -->
+          <div class="row no-gutters">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+              <div class="users-container text-center">
+                <ul class="users">
+                  <li class="person" *ngFor="let user of usersPreview">
+                    <div class="user">
+                      <img [src]="user.avatar.path">
+                    </div>
+                    <!-- username -->
+                    <p class="name-time">
+                      <span class="name">{{user.nickname}}</span>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+              <div class="container-fluid p-3 text-center">
+                <h3 class="mt-4">{{greet}}</h3>
+                <h5 class="mt-4 mb-4">Waiting Room, you're entering into room {{ roomUUID }} </h5>
+
+                <div class="d-flex justify-content-center">
+                  <mat-form-field appearance="legacy" class="mr-5">
+                    <mat-label>Enter Nickname</mat-label>
+                    <input matInput #input maxlength="20" placeholder="Ex. Nougat" [(ngModel)]="user.nickname">
+                    <mat-icon matSuffix>smart_toy</mat-icon>
+                  </mat-form-field>
+                  <app-avatar (newAvatarEvent)="setAvatar($event)"></app-avatar>
+                </div>
+                <div class="example-button-row mt-4 mb-5">
+                  <button class="mr-3" mat-raised-button color="primary" (click)="joinRoom()">Join</button>
+                </div>
+              </div>
+            </div>
+            <!-- Row end -->
+          </div>
+        </div>
+        <!-- Row end -->
+      </div>
+      <!-- Content wrapper end -->
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 .progress-bar {
   width: 100%;
-  height: 1vw;
-
+  height: 2vw;
+  background: transparent;
 }
 
 .cursor-initial {
@@ -12,18 +12,17 @@
   cursor: none;
 }
 
-
-.container {
-  width: 100%;
-  height: 100%;
+.container-fullscreen {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .video-container {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   border-radius: 4px;
   margin: 0 auto;
   position: relative;
@@ -34,7 +33,7 @@
 
 video {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   border-radius: 2px;
   background-color: black;
 }
@@ -46,7 +45,7 @@ video {
   position: absolute;
   bottom: 0;
   transition: all 0.2s ease;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+  background-image: linear-gradient(to bottom, rgba(255,255, 255, 0.3), rgba(0, 0, 0, 0.5));
 }
 
 .video-controls.hide {
@@ -57,14 +56,13 @@ video {
 .video-progress {
   position: relative;
   height: 2rem;
-  margin-bottom: 2vw;
+  margin-bottom: 1vw;
 }
-
 
 .seek {
   position: absolute;
   top: 0;
-  width: 100%;
+  width: 100vw;
   cursor: pointer;
   margin: 0;
 }
@@ -266,11 +264,21 @@ svg {
   width: 4vw;
 }
 
-
-.mat-dialog-content{
-  text-align: center;
+.title{
+  color: white;
+  margin: 0px;
 }
 
-.mat-dialog-title{
+.center{
   text-align: center;
+  margin-top: 0;
+}
+
+.subtitle{
+  color: white;
+  font-size: 15px;
+}
+
+.transparent-snackbar{
+  background: transparent;
 }

@@ -1,0 +1,26 @@
+<div class="mb-5 h-100">
+    <button mat-icon-button class="float-right" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="users-container text-center mt-5">
+    <ul class="users">
+        <div class="person" *ngFor="let user of data">
+            <div *ngIf="!user.isAdmin">
+                <div class="user">
+                    <img [src]="user.avatar.path">
+                </div>
+                <!-- username -->
+                <p class="name-time">
+                    <span class="name">{{user.nickname}}</span>
+                </p>
+                <div class="float-right">
+
+                    <mat-slide-toggle class="example-margin" color="Accent" [checked]="user.isInhibited"
+                        (change)="toggleMute($event, user)">
+                    </mat-slide-toggle>
+                </div>
+            </div>
+        </div>
+    </ul>
+</div>

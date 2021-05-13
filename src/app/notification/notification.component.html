@@ -1,0 +1,13 @@
+<div class="users transparent-snackbar">
+    <div class="person">
+        <div class="user" *ngIf="data.user.avatar.path">
+            <img [src]="data.user.avatar.path">
+            <span class="status busy"></span>
+        </div>
+        <!-- username -->
+        <p class="name-time">
+            <span class="name">{{data.user.nickname}}</span>
+            <span class="message">{{data.message}}</span>
+        </p>
+    </div>
+</div>

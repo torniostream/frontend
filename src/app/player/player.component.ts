@@ -2,69 +2,45 @@ import {
   Component,
   ViewChild,
   ElementRef,
-  AfterViewInit,
+  EventEmitter,
   OnInit,
+  AfterViewChecked,
   Inject,
   HostListener,
+  Output,
+  Input,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '../services/api.service';
+
 import { DOCUMENT } from '@angular/common';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-
-export interface DialogData {
-  room: string;
-}
-
-@Component({
-  selector: 'app-room-dialog',
-  templateUrl: 'room.dialog.html',
-  styleUrls: ['./player.component.css'],
-})
-export class RoomDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<RoomDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-    this.greet = this.getGreeting();
-  }
-
-  greets = ['Ciao!', 'Hey!', 'Salve!', 'Ehi, come va?'];
-  greet: string;
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-  getGreeting(): string {
-    return this.greets[Math.floor(Math.random() * this.greets.length)];
-  }
-}
+import {SharedService} from './../shared.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css'],
 })
-export class PlayerComponent implements AfterViewInit, OnInit {
+export class PlayerComponent implements OnInit, AfterViewChecked {
   constructor(
-    private api: ApiService,
-    @Inject(DOCUMENT) private document: Document,
-    public dialog: MatDialog,
-    private route: ActivatedRoute
-  ) {}
-  Playing = false;
+    @Inject(DOCUMENT) private document: Document, private sharedService: SharedService
+  ) { }
+
+  @Input() play: boolean;
+  @Output() playChange = new EventEmitter<boolean>();
+
+  @Input() position: number;
+  @Output() positionChange: EventEmitter<number> = new EventEmitter<number>();
+
+  @Input() duration: number;
+  @Input() admin: boolean = false;
 
   elem: any;
   isFullScreen = false;
 
   width = 0;
 
-  position = 0;
-  duration = 0;
+  // position = 0;
+  // duration = 0;
 
   audioon = false;
   audiolow = false;
@@ -72,17 +48,14 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   timeLeft = '00:00';
   durationTot = '00:00';
 
-  temp = 0;
-
-  title = '';
-  subtitle = '';
+  title = 'Banning and friends';
+  subtitle = 'Io sono leggenda';
 
   @ViewChild('videoRef') divView: ElementRef;
+  @Output() video = new EventEmitter<ElementRef>();
 
   controlOpacity = 1;
   controlTimeout: any;
-
-  roomId: string;
 
   @HostListener('document:fullscreenchange', ['$event'])
   @HostListener('document:webkitfullscreenchange', ['$event'])
@@ -90,22 +63,6 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   @HostListener('document:MSFullscreenChange', ['$event'])
   fullscreenmodes(event) {
     this.chkScreenMode();
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(RoomDialogComponent, {
-      width: '40rem',
-      height: '20rem',
-      data: { room: this.roomId },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === '') {
-        console.log('Error: Insert code room again');
-      }
-      this.api.registerToRoom(result, this.divView.nativeElement);
-      this.audioon = !this.divView.nativeElement.muted;
-    });
   }
 
   muted() {
@@ -119,31 +76,13 @@ export class PlayerComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.roomId = params.room;
-    });
     this.chkScreenMode();
     this.elem = document.documentElement;
-    this.api.getPosition().subscribe((pos) => {
-      this.position = pos;
-      console.log(pos);
-      let totalSeconds = 0;
-      totalSeconds = totalSeconds + pos / 1000;
+    this.video.emit(this.divView);
+  }
 
-      const time = new Date(null);
-      time.setSeconds(totalSeconds);
-      this.timeLeft = time.toISOString().substr(11, 8);
-    });
-    this.api.getVideoDuration().subscribe((dur) => {
-      if (dur <= 0) {
-        console.log('Negative duration!');
-      }
-      this.duration = dur;
-      var date = new Date(null);
-      date.setSeconds(dur/1000);
-      this.durationTot = date.toISOString().substr(11, 8);
-    });
-    this.api.getIsPlaying().subscribe((play) => (this.Playing = play));
+  ngAfterViewChecked(): void {
+    this.video.emit(this.divView);
   }
 
   toggleMute() {
@@ -175,12 +114,8 @@ export class PlayerComponent implements AfterViewInit, OnInit {
 
   onSeek(event) {
     const value = event.value;
-    console.log(value);
-    this.api.doSeek(value);
-  }
+    this.positionChange.emit(value);
 
-  seekRelative(sec: number) {
-    this.api.doSeek(this.position + sec * 1000);
   }
 
   chkScreenMode() {
@@ -216,16 +151,11 @@ export class PlayerComponent implements AfterViewInit, OnInit {
       case 'f':
         this.toggleFullscreen();
     }
-    console.log(event.key);
   }
 
   togglePlaying() {
-    this.Playing ? this.api.pause() : this.api.resume();
-    this.Playing = !this.Playing;
-  }
-
-  ngAfterViewInit(): void {
-    this.openDialog();
+    this.play = !this.play;
+    this.playChange.emit(this.play);
   }
 
   // Fullscreen button
@@ -259,8 +189,12 @@ export class PlayerComponent implements AfterViewInit, OnInit {
     if (!this.document.exitFullscreen) {
       return; // Fullscreen WebAPI not found
     }
-
     this.document.exitFullscreen();
     this.isFullScreen = false;
+  }
+
+  toggleAdmin()
+  {
+    this.sharedService.sendAdminEvent();
   }
 }

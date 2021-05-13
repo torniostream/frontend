@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  baseURL: 'http://localhost:4200',
   apiurl: 'ws://localhost:4200/wss/player',
 };
 

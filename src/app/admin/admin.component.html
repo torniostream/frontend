@@ -1,0 +1,79 @@
+<p>
+    <mat-toolbar>
+        <span>Tornio Stream</span>
+    </mat-toolbar>
+</p>
+
+<mat-grid-list cols="2" rowHeight="1.5:1">
+    <mat-grid-tile>
+        <div class="adminPage">
+            <!-- admin Form -->
+            <mat-vertical-stepper linear=true #stepper>
+                <mat-step [stepControl]="firstFormGroup">
+                    <form [formGroup]="firstFormGroup">
+                        <ng-template matStepLabel>Room name</ng-template>
+                        <mat-form-field>
+                            <mat-label>Room name</mat-label>
+                            <input matInput [(ngModel)] = "roomName" formControlName="firstCtrl" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperNext mat-raised-button color="primary">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Movie Link</ng-template>
+                        <mat-form-field>
+                            <mat-label>Movie Link</mat-label>
+                            <input matInput [(ngModel)] = "movieLink" formControlName="secondCtrl" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious mat-raised-button class="mr-2">Back</button>
+                            <button mat-button matStepperNext mat-raised-button color="primary">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Nickname & Avatar</ng-template>
+                        <div class="d-flex justify-content-center">
+                            <mat-form-field>
+                                <mat-label>Nickname</mat-label>
+                                <input matInput formControlName="secondCtrl" placeholder="Dott. Polpetta" required
+                                    [(ngModel)]="nickname">
+                            </mat-form-field>
+                            <app-avatar (newAvatarEvent)="setAvatar($event)" class="mt-3 ml-2"></app-avatar>
+                        </div>
+                        <div>
+                            <button mat-button matStepperPrevious mat-raised-button class="mr-2">Back</button>
+                            <button mat-button matStepperNext mat-raised-button color="primary">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Generate Shared Link</ng-template>
+                    <button mat-button matStepperNext mat-raised-button color="primary" class="mb-3"
+                        (click)="generateLink()">Generate Link</button>
+                    <div *ngIf="isEditable" class="d-flex justify-content-center">
+                        <input matInput type="text" class="mb-3 input" [(ngModel)]="generatedLink">
+                        <button mat-icon-button [cdkCopyToClipboard]="generatedLink">
+                            <mat-icon>
+                                content_copy
+                            </mat-icon>
+                        </button>
+                    </div>
+
+                    <div>
+                        <button mat-button matStepperPrevious class="mr-2" mat-raised-button>Back</button>
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div class="container-carousel">
+            <app-carousel></app-carousel>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>
